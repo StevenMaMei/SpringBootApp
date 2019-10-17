@@ -2,6 +2,12 @@ package co.edu.icesi.ci.talleres.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,18 +23,23 @@ public class Tmio1Conductore implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@NotBlank
 	private String cedula;
-
+	
+	@NotBlank
 	private String apellidos;
-
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_contratacion")
 	private Date fechaContratacion;
-
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_nacimiento")
 	private Date fechaNacimiento;
 
+	@NotBlank
 	private String nombre;
 
 	//bi-directional many-to-one association to Tmio1Servicio
@@ -40,6 +51,7 @@ public class Tmio1Conductore implements Serializable {
 	private List<Tmio1ServiciosSitio> tmio1ServiciosSitios;
 
 	public Tmio1Conductore() {
+		
 	}
 
 	public String getCedula() {

@@ -42,4 +42,10 @@ public class ServicioConductorImp implements ServicioConductor{
 		return repositorio.findById(cedula);
 	}
 
+	@Override
+	public Iterable<Tmio1Conductore> findAll() {
+		
+		return repositorio.findAll();
+	}
+
 }

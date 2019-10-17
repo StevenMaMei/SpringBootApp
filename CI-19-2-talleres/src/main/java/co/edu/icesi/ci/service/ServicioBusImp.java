@@ -22,7 +22,7 @@ public class ServicioBusImp implements ServicioBus {
 		}else if(!(bus.getTipo().equals("A")||bus.getTipo().equals("T")||bus.getTipo().equals("P"))) {
 			
 			throw new Exception("Bus de tipo no valido");
-		}else if(repositorio.findById(bus.getId()).isPresent()) {
+		}else if(repositorio.findByPlaca(bus.getPlaca()).isPresent()) {
 			
 			throw new Exception("ya existe un bus con esa placa");
 		}
@@ -45,6 +45,12 @@ public class ServicioBusImp implements ServicioBus {
 	public Optional<Tmio1Bus> consultarBus(Integer id) throws Exception {
 		
 		return repositorio.findById(id);
+	}
+
+	@Override
+	public Iterable<Tmio1Bus> findAll() {
+		
+		return repositorio.findAll();
 	}
 
 }

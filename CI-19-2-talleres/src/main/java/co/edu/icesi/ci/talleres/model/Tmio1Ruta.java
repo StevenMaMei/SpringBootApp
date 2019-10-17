@@ -2,6 +2,9 @@ package co.edu.icesi.ci.talleres.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -20,23 +23,23 @@ public class Tmio1Ruta implements Serializable {
 	@SequenceGenerator(name="TMIO1_RUTAS_ID_GENERATOR", sequenceName="TMIO1_RUTAS_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TMIO1_RUTAS_ID_GENERATOR")
 	private Integer id;
-
+	@NotBlank
 	private String activa;
-
+	@NotBlank
 	private String descripcion;
-
+	@NotNull
 	@Column(name="dia_fin")
 	private BigDecimal diaFin;
-
+	@NotNull
 	@Column(name="dia_inicio")
 	private BigDecimal diaInicio;
-
+	@NotNull
 	@Column(name="hora_fin")
 	private BigDecimal horaFin;
-
+	@NotNull
 	@Column(name="hora_inicio")
 	private BigDecimal horaInicio;
-
+	@NotBlank
 	private String numero;
 
 	//bi-directional many-to-one association to Tmio1Servicio

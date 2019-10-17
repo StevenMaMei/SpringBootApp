@@ -94,4 +94,10 @@ public class ServicioServicioImp implements ServicioServicio {
 		return repositorioServicio.findById(pk);
 	}
 
+	@Override
+	public Iterable<Tmio1Servicio> findAll() {
+		
+		return repositorioServicio.findAll();
+	}
+
 }

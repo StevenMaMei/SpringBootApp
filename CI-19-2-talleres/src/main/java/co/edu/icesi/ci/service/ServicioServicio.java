@@ -13,4 +13,5 @@ public interface ServicioServicio {
 	public Tmio1Servicio removerServicio(Tmio1Servicio servicio)throws Exception;
 	public Tmio1Servicio actualizarServicio(Tmio1Servicio ServicioMock)throws Exception;
 	public Optional<Tmio1Servicio> consultarServicio(Integer busId, String cedula, Integer rutaId, Date fechaIni, Date fechaFin)throws Exception;
+	public Iterable<Tmio1Servicio> findAll();
 }

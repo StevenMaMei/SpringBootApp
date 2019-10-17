@@ -9,6 +9,6 @@ public interface ServicioConductor {
 	public Tmio1Conductore removerConductor(Tmio1Conductore c)throws Exception;
 	public Tmio1Conductore actualizarConductor(Tmio1Conductore conductor)throws Exception;
 	public Optional<Tmio1Conductore> consultarConductor(String id)throws Exception;
-	
+	public Iterable<Tmio1Conductore> findAll();
 	
 }

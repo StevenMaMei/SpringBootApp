@@ -52,4 +52,10 @@ public class ServicioRutaImp implements ServicioRuta {
 		return repositorio.findById(id);
 	}
 
+	@Override
+	public Iterable<Tmio1Ruta> findAll() {
+		
+		return repositorio.findAll();
+	}
+
 }

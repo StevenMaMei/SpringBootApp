@@ -2,6 +2,12 @@ package co.edu.icesi.ci.talleres.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
+import lombok.NonNull;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,16 +25,20 @@ public class Tmio1Bus implements Serializable {
 	@Id
 	@SequenceGenerator(name="TMIO1_BUSES_ID_GENERATOR", sequenceName="TMIO1_BUSES_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TMIO1_BUSES_ID_GENERATOR")
-	private Integer id;
+	private int id;
 
+	@Positive
+	@NotNull
 	private BigDecimal capacidad;
-
+	
+	@NotBlank(message = "Ingrese la marca")
 	private String marca;
 
+	@NotNull
 	private BigDecimal modelo;
-
+	@NotBlank(message = "Ingrese placa")
 	private String placa;
-
+	@NotBlank( message = "Ingrese tipo")
 	private String tipo;
 
 	//bi-directional many-to-one association to Tmio1Servicio
