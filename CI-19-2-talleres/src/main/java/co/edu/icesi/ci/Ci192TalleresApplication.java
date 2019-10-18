@@ -42,7 +42,7 @@ public class Ci192TalleresApplication {
 		Tmio1User user2 = new Tmio1User();
 		user2.setUsername("steven");
 		user2.setPassword("{noop}123");
-		user2.setTipo("administrador");
+		user2.setTipo(Tmio1User.ROL_ADMINISTRADOR);
 		
 		Tmio1Bus bus = new Tmio1Bus();
 		bus.setCapacidad(new BigDecimal("12"));

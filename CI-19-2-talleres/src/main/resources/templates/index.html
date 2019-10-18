@@ -16,34 +16,41 @@
 <link rel="stylesheet" href="../css/shards.min.css">
 </head>
 <body>
+	<a href="/logout"><i class="fas fa-door-open"></i> exit</a>
 	<div th:switch="${buses}" class="container my-5">
 		<div class="row">
 			<div class="col-md-6">
 				<h2 th:case="null">TMIO!</h2>
 				<!--  <div sec:authorize="hasRole('admin')">-->
-					<p>
-						<a href="/buses/"><i class="fas fa-user-edit ml-2"></i> Go to buses</a>
-					</p>
+				<p>
+					<a href="/buses/"><i class="fas fa-user-edit ml-2"></i> Go to
+						buses</a>
+				</p>
 				<!-- </div>-->
-				
+
 				<!--  <div sec:authorize="hasRole('admin')">-->
-					<p>
-						<a href="/conductores/"><i class="fas fa-user-edit ml-2"></i> Go to conductores</a>
-					</p>
+				<p>
+					<a href="/conductores/"><i class="fas fa-user-edit ml-2"></i>
+						Go to conductores</a>
+				</p>
 				<!-- </div>-->
-				
+
 				<!--  <div sec:authorize="hasRole('admin')">-->
-					<p>
-						<a href="/rutas/"><i class="fas fa-user-edit ml-2"></i> Go to rutas</a>
-					</p>
+				<p>
+					<a href="/rutas/"><i class="fas fa-user-edit ml-2"></i> Go to
+						rutas</a>
+				</p>
 				<!-- </div>-->
-				
+
 				<!--  <div sec:authorize="hasRole('admin')">-->
-					<p>
-						<a href="/servicios/"><i class="fas fa-user-edit ml-2"></i> Go to servicios</a>
-					</p>
+				<p>
+					<a href="/servicios/"><i class="fas fa-user-edit ml-2"></i> Go
+						to servicios</a>
+				</p>
 				<!-- </div>-->
-				
+
+
+
 			</div>
 		</div>
 	</div>

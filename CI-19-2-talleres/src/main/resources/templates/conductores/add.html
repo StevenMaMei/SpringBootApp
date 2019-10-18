@@ -16,59 +16,64 @@
 <link rel="stylesheet" href="../css/shards.min.css">
 </head>
 <body>
+	<a href="/logout"><i class="fas fa-door-open"></i> exit</a>
 	<div class="container my-5">
-		<h2 class="mb-5" >New Conductor</h2>
+		<h2 class="mb-5">New Conductor</h2>
 		<div class="row">
 			<div class="col-md-6">
-				<form action="#" th:action="@{/conductores/add/}" th:object="${tmio1Conductore}"
-					method="post">
+				<form action="#" th:action="@{/conductores/add/}"
+					th:object="${tmio1Conductore}" method="post">
 					<div class="row">
-						 
+
 						<div class="form-group col-md-6">
 							<label for="cedula" class="col-form-label">cedula</label> <input
-								type="text" th:field="*{cedula}" class="form-control" id="cedula"
-								placeholder="cedula"> <span
+								type="text" th:field="*{cedula}" class="form-control"
+								id="cedula" placeholder="cedula"> <span
 								th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"
 								class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
 							<label for="apellidos" class="col-form-label">apellidos</label> <input
-								type="text" th:field="*{apellidos}" class="form-control" id="apellidos"
-								placeholder="apellidos"> <span
-								th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"
-								class="text-danger"></span>
-						</div>	
+								type="text" th:field="*{apellidos}" class="form-control"
+								id="apellidos" placeholder="apellidos"> <span
+								th:if="${#fields.hasErrors('apellidos')}"
+								th:errors="*{apellidos}" class="text-danger"></span>
+						</div>
 						<div class="form-group col-md-6">
-							<label for="fechaContratacion" class="col-form-label">fechaContratacion</label> <input
-								type="date" th:field="*{fechaContratacion}" class="form-control" id="fechaContratacion"
+							<label for="fechaContratacion" class="col-form-label">fechaContratacion</label>
+							<input type="date" th:field="*{fechaContratacion}"
+								class="form-control" id="fechaContratacion"
 								placeholder="fechaContratacion"> <span
-								th:if="${#fields.hasErrors('fechaContratacion')}" th:errors="*{fechaContratacion}"
-								class="text-danger"></span>
-						</div>	
+								th:if="${#fields.hasErrors('fechaContratacion')}"
+								th:errors="*{fechaContratacion}" class="text-danger"></span>
+						</div>
 						<div class="form-group col-md-6">
-							<label for="fechaNacimiento" class="col-form-label">fechaNacimiento</label> <input
-								type="date" th:field="*{fechaNacimiento}" class="form-control" id="fechaNacimiento"
+							<label for="fechaNacimiento" class="col-form-label">fechaNacimiento</label>
+							<input type="date" th:field="*{fechaNacimiento}"
+								class="form-control" id="fechaNacimiento"
 								placeholder="fechaNacimiento"> <span
-								th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"
-								class="text-danger"></span>
+								th:if="${#fields.hasErrors('fechaNacimiento')}"
+								th:errors="*{fechaNacimiento}" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
 							<label for="nombre" class="col-form-label">nombre</label> <input
-								type="text" th:field="*{nombre}" class="form-control" id="nombre"
-								placeholder="nombre"> <span
+								type="text" th:field="*{nombre}" class="form-control"
+								id="nombre" placeholder="nombre"> <span
 								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
 								class="text-danger"></span>
-						</div>			
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-4 mt-3">
-							<input type="submit" name="action" class="btn btn-primary" value="Add conductor">
+							<input type="submit" name="action" class="btn btn-primary"
+								value="Add conductor">
 						</div>
 						<div class="col-md-3 mt-3">
 							<input type="reset" class="btn btn-secondary" value="Clear">
 						</div>
 						<div class="col-md-3 mt-3">
-							<input type="submit" name="action" class="btn btn-secondary" value="Cancel">
+							<input type="submit" name="action" class="btn btn-secondary"
+								value="Cancel">
 						</div>
 					</div>
 				</form>

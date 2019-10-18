@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="../css/shards.min.css">
 </head>
 <body>
+	<a href="/logout"><i class="fas fa-door-open"></i> exit</a>
 	<div th:switch="${conductores}">
 		
 		<div th:case="null">
@@ -53,7 +54,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<a th:href="@{/conductores/add/}" class="btn btn-primary"><i
+			<a th:href="@{/conductores/add/}" sec:authorize="hasRole('admin')"class="btn btn-primary"><i
 				class="fas fa-cross"></i></a> <a href="/"><i
 				class="fas fa-home ml-2"></i> Go back to main</a>
 		</div>
