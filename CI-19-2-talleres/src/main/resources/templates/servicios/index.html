@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Servicios</title>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<div th:switch="${servicios}">
+		<div th:case="null">
+			<h2>No hay servicios</h2>
+			</a> <a href="/servicios/"><i class="fas fa-home ml-2"></i> Go back </a>
+		</div>
+		<div th:case="*">
+			<form action="#" th:action="@{/servicios/buscar/}" method="get">
+				<input type="date" placeholder="fecha de la ruta" name="fecha" value="2019-10-17">
+				<div class="col-md-6 mt-3">
+					<input type="submit" name="action" class="btn btn-primary"
+						value="buscar">
+				</div>
+			</form>
+			<table class="table table-striped table-responsive-md">
+				<thead>
+					<tr>
+						<th>Placa bus</th>
+						<th>Cedula conductor</th>
+						<th>Descripcion Servicio</th>
+						<th>Fecha Inicio</th>
+						<th>Fecha Fin</th>
+						<th>Editar</th>
+
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="tmio1Servicio:${servicios}">
+						<td class="text-info" th:text="${tmio1Servicio.tmio1Bus.placa}"></td>
+						<td class="text-info"
+							th:text="${tmio1Servicio.tmio1Conductore.cedula}"></td>
+						<td class="text-info"
+							th:text="${tmio1Servicio.tmio1Ruta.descripcion}"></td>
+						<td class="text-info" th:text="${tmio1Servicio.id.fechaInicio}"></td>
+						<td class="text-info" th:text="${tmio1Servicio.id.fechaFin}"></td>
+						<td><a
+							th:href="@{/servicios/edit/{id}/{ced}/{idR}/{fi}/{ff}(id=${tmio1Servicio.tmio1Bus.id.toString()},ced=${tmio1Servicio.tmio1Conductore.cedula},idR=${tmio1Servicio.tmio1Ruta.id},fi=${tmio1Servicio.id.fechaInicio.getTime()},ff=${tmio1Servicio.id.fechaFin.getTime()})}"
+							class="btn btn-primary"><i class="fas fa-calendar ml-2"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+			<a th:href="@{/servicios/add/}" class="btn btn-primary"><i
+				class="fas fa-cross"></i></a> <a href="/"><i
+				class="fas fa-home ml-2"></i> Go back to main</a>
+		</div>
+	</div>
+</body>
+</html>

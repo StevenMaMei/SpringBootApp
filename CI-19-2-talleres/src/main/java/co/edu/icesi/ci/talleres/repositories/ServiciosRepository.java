@@ -7,4 +7,5 @@ import co.edu.icesi.ci.talleres.model.Tmio1ServicioPK;
 
 public interface ServiciosRepository extends CrudRepository<Tmio1Servicio, Tmio1ServicioPK> {
 
+	
 }

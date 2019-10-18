@@ -1,6 +1,7 @@
 package co.edu.icesi.ci.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,18 @@ public class ServicioBusImp implements ServicioBus {
 	public Iterable<Tmio1Bus> findAll() {
 		
 		return repositorio.findAll();
+	}
+
+	@Override
+	public Iterable<Tmio1Bus> consultarBus(String placa) throws Exception {
+		Optional<Tmio1Bus> bus= repositorio.findByPlaca(placa);
+		if(bus.isPresent()) {
+			ArrayList<Tmio1Bus> lista= new ArrayList<>();
+			lista.add(bus.get());
+			return lista;
+		}else {
+			return null;
+		}
 	}
 
 }

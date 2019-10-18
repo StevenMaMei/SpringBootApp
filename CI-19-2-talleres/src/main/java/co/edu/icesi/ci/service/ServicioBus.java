@@ -9,5 +9,6 @@ public interface ServicioBus {
 	public Tmio1Bus removerBus(Tmio1Bus bus) throws Exception;
 	public Tmio1Bus actualizarBus(Tmio1Bus bus) throws Exception;
 	public Optional<Tmio1Bus> consultarBus(Integer id) throws Exception;
+	public Iterable<Tmio1Bus> consultarBus(String placa) throws Exception;
 	public Iterable<Tmio1Bus> findAll();
 }

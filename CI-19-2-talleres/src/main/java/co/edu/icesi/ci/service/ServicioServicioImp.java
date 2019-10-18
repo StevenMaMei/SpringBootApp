@@ -1,5 +1,6 @@
 package co.edu.icesi.ci.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -76,9 +77,25 @@ public class ServicioServicioImp implements ServicioServicio {
 	}
 
 	@Override
-	public Tmio1Servicio actualizarServicio( Tmio1Servicio Servicio) throws Exception {
-		// TODO hacer verificaciones
-		return repositorioServicio.save(Servicio);
+	public Tmio1Servicio actualizarServicio( Tmio1Servicio servicio) throws Exception {
+		if(servicio.getTmio1Bus()== null || servicio.getTmio1Conductore()== null || servicio.getTmio1Ruta()== null) {
+			if(servicio.getTmio1Bus()== null) {
+				throw new Exception( "No existe el bus");
+			}else if(servicio.getTmio1Conductore()== null) {
+				throw new Exception("No existe el conductor");
+			}else if(servicio.getTmio1Ruta()== null) {
+				throw new Exception("No existe la ruta");
+			}
+		}else if( servicio.getId().getFechaInicio()== null || servicio.getId().getFechaFin()==null) {
+			
+			throw new Exception("Las fechas no pueden ser nulas");
+		}else if( servicio.getId().getFechaInicio().compareTo(servicio.getId().getFechaFin())>0) {
+			
+			throw new Exception("La fecha de inicio y fin del servicio no son consistentes");
+		}else if( servicio.getId().getFechaInicio().compareTo(servicio.getTmio1Conductore().getFechaContratacion())<0) {
+			throw new Exception("La fecha de inicio del servicio es anterior a la fecha de contratacion");
+		}
+		return repositorioServicio.save(servicio);
 	}
 
 	@Override
@@ -98,6 +115,18 @@ public class ServicioServicioImp implements ServicioServicio {
 	public Iterable<Tmio1Servicio> findAll() {
 		
 		return repositorioServicio.findAll();
+	}
+
+	@Override
+	public Iterable<Tmio1Servicio> findByDate(Date date) {
+		ArrayList<Tmio1Servicio> servicios = (ArrayList<Tmio1Servicio>) findAll();
+		ArrayList<Tmio1Servicio> res= new ArrayList<>();
+		for(int i =0 ; i<servicios.size();i++) {
+			Tmio1ServicioPK pk = servicios.get(i).getId();
+			if(pk.getFechaInicio().compareTo(date)<=0 && pk.getFechaFin().compareTo(date)>=0)
+				res.add(servicios.get(i));
+		}
+		return res;
 	}
 
 }

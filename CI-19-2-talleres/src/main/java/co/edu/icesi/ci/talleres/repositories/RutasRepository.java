@@ -5,4 +5,5 @@ import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 
 public interface RutasRepository extends CrudRepository<Tmio1Ruta, Integer> {
 
+	public Iterable<Tmio1Ruta> findByDescripcion(String des);
 }

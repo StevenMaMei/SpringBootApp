@@ -10,4 +10,5 @@ public interface ServicioRuta {
 	public Tmio1Ruta actualizarRuta(Tmio1Ruta Ruta) throws Exception;
 	public Optional<Tmio1Ruta> consultarRuta(Integer id) throws Exception;
 	public Iterable<Tmio1Ruta> findAll();
+	public Iterable<Tmio1Ruta> findByDescripcion(String des);
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Add servicio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<div class="container my-5">
+		<h2 class="mb-5">New Servicio</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/servicios/edit/}" th:object="${tmio1ServicioWrapper}"
+					method="post">
+					<div class="row">
+					
+						<input hidden
+								type="date" th:field="*{fechaInicioViejo}" class="form-control" id="fechaInicioViejo"
+								placeholder="fechaInicio">
+								
+						<input hidden
+								type="date" th:field="*{fechaFinViejo}" class="form-control" id="fechaFinViejo"
+								placeholder="fechaFinViejo"> 
+								
+						<input hidden
+								type="text" th:field="*{idBusViejo}" class="form-control" id="idBusViejo"
+								placeholder="idBusViejo">
+						
+						<input hidden
+								type="text" th:field="*{cedulaConductorViejo}" class="form-control" id="cedulaConductorViejo"
+								placeholder="cedulaConductorViejo">
+								
+						<input hidden
+								type="text" th:field="*{rutaIdViejo}" class="form-control" id="rutaIdViejo"
+								placeholder="rutaIdViejo">
+								
+						<div class="form-group col-md-6">
+							<label for="fechaInicio" class="col-form-label">fecha Inicio</label> <input
+								type="date" th:field="*{fechaInicio}" class="form-control" id="fechaInicio"
+								placeholder="fechaInicio"> <span
+								th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"
+								class="text-danger"></span>
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="fechaFin" class="col-form-label">fecha fin</label> <input
+								type="date" th:field="*{fechaFin}" class="form-control" id="fechaFin"
+								placeholder="fechaFin"> <span
+								th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}"
+								class="text-danger"></span>
+						</div>
+						
+						
+						<div class="form-group col-md-6">
+							<label for="idBus" class="col-form-label">Buses placa</label> <select
+								th:field="*{idBus}">
+								<option th:each="pla : ${buses}" th:value="${pla.id}"
+									class="form-control" th:text="${pla.placa}"
+									th:selected="${tmio1ServicioWrapper.idBus= pla.id}"></option>
+							</select> <span th:if="${#fields.hasErrors('idBus')}"
+								th:errors="*{idBus}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="conductor" class="col-form-label">Conductor Cedula</label> <select
+								th:field="*{cedulaConductor}">
+								<option th:each="cond : ${conductores}" th:value="${cond.cedula}"
+									class="form-control" th:text="${cond.cedula}"
+									th:selected="${tmio1ServicioWrapper.cedulaConductor=cond.cedula}"></option>
+							</select> <span th:if="${#fields.hasErrors('cedulaConductor')}"
+								th:errors="*{cedulaConductor}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="rut" class="col-form-label">Rutas ID</label> <select
+								th:field="*{rutaId}">
+								<option th:each="ruta : ${rutas}" th:value="${ruta.id}"
+									class="form-control" th:text="${ruta.id}"
+									th:selected="${tmio1ServicioWrapper.rutaId=ruta.id}"></option>
+							</select> <span th:if="${#fields.hasErrors('rutaId')}"
+								th:errors="*{rutaId}" class="text-danger"></span>
+						</div>
+						<div></div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mt-3">
+							<input type="submit" name="action" class="btn btn-primary"
+								value="editar">
+						</div>
+						<div class="col-md-3 mt-3">
+							<input type="reset" class="btn btn-secondary" value="Clear">
+						</div>
+						<div class="col-md-3 mt-3">
+							<input type="submit" name="action" class="btn btn-secondary"
+								value="Cancel">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

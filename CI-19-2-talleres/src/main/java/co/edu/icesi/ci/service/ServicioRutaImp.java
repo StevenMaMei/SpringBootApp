@@ -58,4 +58,9 @@ public class ServicioRutaImp implements ServicioRuta {
 		return repositorio.findAll();
 	}
 
+	@Override
+	public Iterable<Tmio1Ruta> findByDescripcion(String des) {
+		return repositorio.findByDescripcion(des);
+	}
+
 }
