@@ -1,0 +1,13 @@
+@Test
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void saveTest() {
+
+		assertNotNull(tmio1ConductoreDao);
+		
+		
+		
+	}
+
+ AND FUNCTION( 'DATEDIFF',k.fechaInicio, '"+(fecha.getYear()+1900)+"/"+fecha.getMonth()+"/"+fecha.getDay()+"' ) ==0 AND FUNCTION('DATEDIFF',k.fechaFin,'"+(1900+fecha.getYear())+"/"+fecha.getMonth()+"/"+fecha.getDay()+"')>=0
+
+AND datediff(k.id.fechaInicio, '"+(fecha.getYear()+1900)+"/"+fecha.getMonth()+"/"+fecha.getDay()+"' ) ==0 AND datediff(k.id.fechaFin,'"+(1900+fecha.getYear())+"/"+fecha.getMonth()+"/"+fecha.getDay()+"')>=0 
