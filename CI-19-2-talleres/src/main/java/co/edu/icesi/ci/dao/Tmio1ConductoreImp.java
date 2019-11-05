@@ -65,10 +65,9 @@ public class Tmio1ConductoreImp implements Tmio1ConductoreDao {
 	@Override
 	public List<Object[]> consultaAdicional(Date fecha) {
 		String jpql= "Select DISTINCT t, "
-				+ "(Select COUNT(*) From Tmio1Servicio k Where k.id.fechaInicio <= :fechita  AND k.id.fechaFin >= :fechita AND k.id.cedulaConductor = t.cedula)AS cant, s"
+				+ "(Select COUNT(*) From Tmio1Servicio k Where k.id.fechaInicio <= :fechita  AND k.id.fechaFin >= :fechita AND k.id.cedulaConductor = t.cedula)AS cant "
 				+ "from Tmio1Conductore t "
-				+ "INNER JOIN Tmio1Servicio s ON t.cedula = s.id.cedulaConductor "
-				+ "ORDER BY s.id.fechaInicio ";
+				+ "ORDER BY t.fechaNacimiento ";
 				
 		return 	entityManager.createQuery(jpql).setParameter("fechita", fecha).getResultList();
 	}

@@ -30,41 +30,47 @@ public class Tmio1RutaDaoImp implements Tmio1RutaDao{
 	}
 
 	@Override
-	public Tmio1Ruta findById(Integer id) {
-		return entityManager.find(Tmio1Ruta.class, id);
+	public Tmio1Ruta findById(int id) {
+		String jpql= "Select t "
+				+ "from Tmio1Ruta t "
+				+ "where t.id= :idd";
+		Tmio1Ruta ruta= null;
+		List<Tmio1Ruta> con= entityManager.createQuery(jpql).setParameter("idd", id).getResultList();
+		if(con.size()>0) {
+			ruta= con.get(0);
+		}
+		return ruta;
 	}
 
 	@Override
 	public List<Tmio1Ruta> findByRangoHoras(BigDecimal horaInicio, BigDecimal horaFin) {
-		String jpql= "Select t"
-				+ "from Tmio1Ruta t"
-				+ "where t.horaInicio>="+horaInicio+"AND t.horaFin<="+horaFin;
-		return entityManager.createQuery(jpql).getResultList();
+		String jpql= "Select t "
+				+ "from Tmio1Ruta t "
+				+ "where t.horaInicio = :h1 AND t.horaFin = :h2";
+		return entityManager.createQuery(jpql).setParameter("h1", horaInicio).setParameter("h2",horaFin).getResultList();
 	}
 
 	@Override
 	public List<Tmio1Ruta> findByRangoFecha(Date fechaInicio, Date fechaFin) {
-		String jpql= "Select t"
-				+ "from Tmio1Ruta t INNER JOIN Tmio1Servicio k ON t.id=k.idRuta"
-				+ "where DATEDIFF(k.fechaInicio,"+fechaInicio+") >=0 AND"+"DATEDIFF(k.fechaFin, "+fechaFin+")<=0";
-		return entityManager.createQuery(jpql).getResultList();
+		String jpql= "Select t "
+				+ "from Tmio1Ruta t INNER JOIN Tmio1Servicio k ON t.id=k.id.idRuta "
+				+ "where k.id.fechaInicio = :f1 AND k.id.fechaFin = :f2";
+		return entityManager.createQuery(jpql).setParameter("f1", fechaInicio).setParameter("f2", fechaFin).getResultList();
 	}
 
 	@Override
 	public List<Tmio1Ruta> findAll() {
 		
-		String jpql = "Select a from TMio1Ruta a";
+		String jpql = "Select a from Tmio1Ruta a";
 		return 	entityManager.createQuery(jpql).getResultList();
 	}
 
 	@Override
 	public List<Tmio1Ruta> consultaAdicional(Date fecha) {
-		String jpql= "Select t"
-				+ "from Tmio1Ruta t INNER JOIN Tmio1Servicio k ON t.id=k.idRuta"
-				+ "where DATEDIFF(k.fechaInicio,"+fecha+") <=0 "
-						+ "AND"+"DATEDIFF(k.fechaFin, "+fecha+")>=0 "
-						+ "AND (Select Count(*) From tmio1Sservicio k1 Where k1.idRuta= t.id) <= 10 ";
-		return entityManager.createQuery(jpql).getResultList();
+		String jpql= "Select DISTINCT t "
+				+ "from Tmio1Ruta t "
+				+ "where (Select Count(k1.id.idRuta) From Tmio1Servicio k1 Where k1.id.idRuta= t.id AND k1.id.fechaInicio <= :f AND k1.id.fechaFin >= :f) <= 10 ";
+		return entityManager.createQuery(jpql).setParameter("f", fecha).getResultList();
 		
 	}
 

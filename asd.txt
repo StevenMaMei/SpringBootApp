@@ -2,7 +2,7 @@
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveTest() {
 
-		assertNotNull(tmio1ConductoreDao);
+		assertNotNull(tmio1RutaDao);
 		
 		
 		
