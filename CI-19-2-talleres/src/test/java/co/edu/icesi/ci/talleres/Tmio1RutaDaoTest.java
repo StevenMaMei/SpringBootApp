@@ -156,6 +156,39 @@ public class Tmio1RutaDaoTest {
 		assertEquals(rutas.get(0).getDescripcion(), "a");
 		
 	}
+	
+	@Test
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void findAllTest() {
+
+		assertNotNull(tmio1RutaDao);
+		
+		Tmio1Ruta ru1= new Tmio1Ruta();
+		ru1.setActiva("a");
+		ru1.setDescripcion("a");
+		ru1.setDiaFin(new BigDecimal(6));
+		ru1.setDiaInicio(new BigDecimal(1));
+		ru1.setHoraFin(new BigDecimal("2"));
+		ru1.setHoraInicio(new BigDecimal("1"));
+		ru1.setNumero("1");
+		
+		Tmio1Ruta ru2= new Tmio1Ruta();
+		ru2.setActiva("a");
+		ru2.setDescripcion("b");
+		ru2.setDiaFin(new BigDecimal(5));
+		ru2.setDiaInicio(new BigDecimal(1));
+		ru2.setHoraFin(new BigDecimal("3"));
+		ru2.setHoraInicio(new BigDecimal("1"));
+		ru2.setNumero("1");
+		
+		tmio1RutaDao.save(ru1);
+		List<Tmio1Ruta> rutas = tmio1RutaDao.findAll();
+		assertEquals(rutas.size(), 1);
+		tmio1RutaDao.save(ru2);
+		rutas = tmio1RutaDao.findAll();
+		assertEquals(rutas.size(), 2);
+		
+	}
 
 	@Test
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

@@ -166,6 +166,33 @@ public class Tmio1BusDaoTest {
 		assertTrue(buses.get(0).equals(bus));
 		
 	}
+	@Test
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void findAllTest() {
+
+		assertNotNull(tmio1BusDao);
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		
+		Tmio1Bus bus2 = new Tmio1Bus();
+		bus2.setCapacidad(new BigDecimal("12"));
+		bus2.setMarca("maz");
+		bus2.setModelo(new BigDecimal("124"));
+		bus2.setTipo("A");	
+		bus2.setPlaca("125");
+		
+		tmio1BusDao.save(bus);
+		tmio1BusDao.save(bus2);
+		
+		List<Tmio1Bus> buses = tmio1BusDao.findAll();
+		assertTrue(buses.size()== 2);
+		
+		
+	}
 	
 	@Test
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

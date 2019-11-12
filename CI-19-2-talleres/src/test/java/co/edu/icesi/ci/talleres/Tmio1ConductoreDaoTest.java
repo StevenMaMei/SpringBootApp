@@ -59,6 +59,34 @@ public class Tmio1ConductoreDaoTest {
 	
 	@Test
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void findAllTest() {
+
+		assertNotNull(tmio1ConductoreDao);
+		
+		Tmio1Conductore con = new Tmio1Conductore();
+		con.setApellidos("ma");
+		con.setCedula("123");
+		con.setFechaContratacion(new Date(100, 10, 17));
+		con.setFechaNacimiento(new Date(99, 1, 1));
+		con.setNombre("se");
+		
+		Tmio1Conductore con1 = new Tmio1Conductore();
+		con1.setApellidos("ma");
+		con1.setCedula("4123");
+		con1.setFechaContratacion(new Date(100, 10, 17));
+		con1.setFechaNacimiento(new Date(99, 1, 1));
+		con1.setNombre("se");
+		
+		tmio1ConductoreDao.save(con);
+		List<Tmio1Conductore> cons = tmio1ConductoreDao.findAll();
+		assertTrue(cons.size()==1);
+		tmio1ConductoreDao.save(con1);
+		cons = tmio1ConductoreDao.findAll();
+		assertTrue(cons.size()==2);
+	}
+	
+	@Test
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void updateTest() {
 
 		assertNotNull(tmio1ConductoreDao);
