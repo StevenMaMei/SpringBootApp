@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import co.edu.icesi.ci.talleres.model.Tmio1Servicio;
 import co.edu.icesi.ci.talleres.model.Tmio1ServicioPK;
 @Repository
-public class Tmio1ServicioImp implements Tmio1ServicioDao {
+public class Tmio1ServicioDaoImp implements Tmio1ServicioDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	@Override
