@@ -12,6 +12,7 @@ public interface Tmio1BusDao {
 	public void update(Tmio1Bus entity);
 	public void delete(Tmio1Bus entity);
 	public Tmio1Bus findByPlaca(String placa);
+	public Tmio1Bus findById(Integer id);
 	public List<Tmio1Bus> findByMarca(String marca);
 	public List<Tmio1Bus> findByModelo(BigDecimal modelo);
 	public List<Tmio1Bus> consultaAdicional(Date fecha);

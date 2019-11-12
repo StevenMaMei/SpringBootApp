@@ -119,7 +119,7 @@ public class Tmio1ConductoreDaoTest {
 		tmio1ConductoreDao.delete(c);
 		try {
 			c=tmio1ConductoreDao.findByCedula("123");
-			fail();
+			assertNull(c);
 		}catch(Exception e) {
 			
 		}
@@ -139,7 +139,7 @@ public class Tmio1ConductoreDaoTest {
 		try {
 			
 			c=tmio1ConductoreDao.findByCedula("124");
-			fail();
+			assertNull(c);
 		}catch(Exception e) {
 			
 		}

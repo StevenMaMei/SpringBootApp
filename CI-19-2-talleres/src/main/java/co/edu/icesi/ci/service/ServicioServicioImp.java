@@ -6,7 +6,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.icesi.ci.dao.Tmio1BusDao;
+import co.edu.icesi.ci.dao.Tmio1ConductoreDao;
+import co.edu.icesi.ci.dao.Tmio1RutaDao;
+import co.edu.icesi.ci.dao.Tmio1ServicioDao;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
@@ -22,27 +28,28 @@ import lombok.Data;
 @Data
 public class ServicioServicioImp implements ServicioServicio {
 	@Autowired
-	private BusesRepository repositorioBus;
+	private Tmio1BusDao repositorioBus;
 	
 	@Autowired
-	private RutasRepository repositorioRuta;
+	private Tmio1RutaDao repositorioRuta;
 	
 	@Autowired
-	private ConductoresRepository repositorioConductor;
+	private Tmio1ConductoreDao repositorioConductor;
 	
 	@Autowired
-	private ServiciosRepository repositorioServicio;
+	private Tmio1ServicioDao repositorioServicio;
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Servicio guardarServicio(Integer busId, String cedula, Integer rutaId, Date fechaIni, Date fechaFin) throws Exception {
-		Optional<Tmio1Bus> bus= repositorioBus.findById(busId);
-		Optional<Tmio1Conductore> conductor= repositorioConductor.findById(cedula);
-		Optional<Tmio1Ruta> ruta = repositorioRuta.findById(rutaId);
-		if(!bus.isPresent() || !conductor.isPresent() || !ruta.isPresent()) {
-			if(!bus.isPresent()) {
+		Tmio1Bus bus= repositorioBus.findById(busId);
+		Tmio1Conductore conductor= repositorioConductor.findByCedula(cedula);
+		Tmio1Ruta ruta = repositorioRuta.findById(rutaId);
+		if(bus== null || conductor== null || ruta==null) {
+			if(bus== null) {
 				throw new Exception( "No existe el bus");
-			}else if(!conductor.isPresent()) {
+			}else if(conductor== null) {
 				throw new Exception("No existe el conductor");
-			}else if(!ruta.isPresent()) {
+			}else if(ruta== null) {
 				throw new Exception("No existe la ruta");
 			}
 		}else if( fechaIni== null || fechaIni==null) {
@@ -51,14 +58,14 @@ public class ServicioServicioImp implements ServicioServicio {
 		}else if( fechaIni.compareTo(fechaFin)>0) {
 			
 			throw new Exception("La fecha de inicio y fin del servicio no son consistentes");
-		}else if( fechaIni.compareTo(conductor.get().getFechaContratacion())<0) {
+		}else if( fechaIni.compareTo(conductor.getFechaContratacion())<0) {
 			throw new Exception("La fecha de inicio del servicio es anterior a la fecha de contratacion");
 		}
 		boolean conflictoConConductor =false;
 		Tmio1Servicio s= new Tmio1Servicio();
-		s.setTmio1Bus(bus.get());
-		s.setTmio1Conductore(conductor.get());
-		s.setTmio1Ruta(ruta.get());
+		s.setTmio1Bus(bus);
+		s.setTmio1Conductore(conductor);
+		s.setTmio1Ruta(ruta);
 		
 		Tmio1ServicioPK pk = new Tmio1ServicioPK();
 		pk.setCedulaConductor(cedula);
@@ -67,16 +74,19 @@ public class ServicioServicioImp implements ServicioServicio {
 		pk.setFechaFin(fechaFin);
 		pk.setFechaInicio(fechaIni);
 		s.setId(pk);
-		return repositorioServicio.save(s);
+		repositorioServicio.save(s);
+		return s;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Servicio removerServicio(Tmio1Servicio servicio) throws Exception {
 		repositorioServicio.delete(servicio);
 		return servicio;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Servicio actualizarServicio( Tmio1Servicio servicio) throws Exception {
 		if(servicio.getTmio1Bus()== null || servicio.getTmio1Conductore()== null || servicio.getTmio1Ruta()== null) {
 			if(servicio.getTmio1Bus()== null) {
@@ -95,11 +105,13 @@ public class ServicioServicioImp implements ServicioServicio {
 		}else if( servicio.getId().getFechaInicio().compareTo(servicio.getTmio1Conductore().getFechaContratacion())<0) {
 			throw new Exception("La fecha de inicio del servicio es anterior a la fecha de contratacion");
 		}
-		return repositorioServicio.save(servicio);
+		repositorioServicio.save(servicio);
+		return servicio ;
 	}
 
 	@Override
-	public Optional<Tmio1Servicio> consultarServicio(Integer busId, String cedula, Integer rutaId, Date fechaIni, Date fechaFin) throws Exception {
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public Tmio1Servicio consultarServicio(Integer busId, String cedula, Integer rutaId, Date fechaIni, Date fechaFin) throws Exception {
 		
 		Tmio1ServicioPK pk = new Tmio1ServicioPK();
 		pk.setCedulaConductor(cedula);
@@ -112,12 +124,14 @@ public class ServicioServicioImp implements ServicioServicio {
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Servicio> findAll() {
 		
 		return repositorioServicio.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Servicio> findByDate(Date date) {
 		ArrayList<Tmio1Servicio> servicios = (ArrayList<Tmio1Servicio>) findAll();
 		ArrayList<Tmio1Servicio> res= new ArrayList<>();

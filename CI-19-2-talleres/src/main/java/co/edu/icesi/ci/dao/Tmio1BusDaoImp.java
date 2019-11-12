@@ -87,4 +87,17 @@ public class Tmio1BusDaoImp implements Tmio1BusDao {
 		//
 	}
 
+	@Override
+	public Tmio1Bus findById(Integer id) {
+		String jpql= "Select b"
+				+ " from Tmio1Bus b "
+				+ "where b.id ="+"'"+id+"'";
+		
+		List<Tmio1Bus> consulta = entityManager.createQuery(jpql).getResultList();
+		if(consulta.size()>0)
+			return consulta.get(0);
+		else
+			return null;
+	}
+
 }

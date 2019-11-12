@@ -36,8 +36,11 @@ public class Tmio1ConductoreImp implements Tmio1ConductoreDao {
 		String jpql= "Select t "
 				+ "from Tmio1Conductore t "
 				+ "where t.cedula="+"'"+cedula+"'";
-		
-		return (Tmio1Conductore)entityManager.createQuery(jpql).getSingleResult();
+		List<Tmio1ConductoreDao> con =  entityManager.createQuery(jpql).getResultList();
+		if(con.size()>0)
+			return (Tmio1Conductore) con.get(0);
+		else
+			return null;
 	}
 
 	@Override

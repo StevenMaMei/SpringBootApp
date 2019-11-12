@@ -6,15 +6,19 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.icesi.ci.dao.Tmio1BusDao;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.repositories.BusesRepository;
 
 @Service
 public class ServicioBusImp implements ServicioBus {
 	@Autowired
-	private BusesRepository repositorio;
+	private Tmio1BusDao repositorio;
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Bus guardarBus(Tmio1Bus bus) throws Exception {
 		if(bus == null) {
 			throw new Exception("No se pueden agregar buses nulos");
@@ -23,43 +27,50 @@ public class ServicioBusImp implements ServicioBus {
 		}else if(!(bus.getTipo().equals("A")||bus.getTipo().equals("T")||bus.getTipo().equals("P"))) {
 			
 			throw new Exception("Bus de tipo no valido");
-		}else if(repositorio.findByPlaca(bus.getPlaca()).isPresent()) {
+		}else if(repositorio.findByPlaca(bus.getPlaca())!= null) {
 			
 			throw new Exception("ya existe un bus con esa placa");
 		}
-		return repositorio.save(bus);
+		repositorio.save(bus);
+		return bus;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Bus removerBus(Tmio1Bus bus) throws Exception {
 		repositorio.delete(bus);
 		return bus ;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Bus actualizarBus(Tmio1Bus bus) throws Exception {
 		
-		return repositorio.save(bus);
+		repositorio.save(bus);
+		return bus;
 	}
 
 	@Override
-	public Optional<Tmio1Bus> consultarBus(Integer id) throws Exception {
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public Tmio1Bus consultarBus(Integer id) throws Exception {
 		
 		return repositorio.findById(id);
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Bus> findAll() {
 		
 		return repositorio.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Bus> consultarBus(String placa) throws Exception {
-		Optional<Tmio1Bus> bus= repositorio.findByPlaca(placa);
-		if(bus.isPresent()) {
+		Tmio1Bus bus= repositorio.findByPlaca(placa);
+		if(bus != null) {
 			ArrayList<Tmio1Bus> lista= new ArrayList<>();
-			lista.add(bus.get());
+			lista.add(bus);
 			return lista;
 		}else {
 			return null;

@@ -64,9 +64,9 @@ public class ConductorController {
 	public String buscar(Model model,@RequestParam("cedula")String cedula ) {
 		try {
 			ArrayList<Tmio1Conductore> conducs= new ArrayList<>();
-			Optional<Tmio1Conductore> con= servicio.consultarConductor(cedula);
-			if(con.isPresent()) {
-				conducs.add(con.get());
+			Tmio1Conductore con= servicio.consultarConductor(cedula);
+			if(con!= null) {
+				conducs.add(con);
 			}else {
 				conducs= null;
 			}

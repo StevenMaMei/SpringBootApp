@@ -16,4 +16,5 @@ public interface Tmio1RutaDao {
 	public List<Tmio1Ruta> findByRangoFecha(Date fechaInicio, Date fechaFin);
 	public List<Tmio1Ruta> consultaAdicional(Date fecha);
 	public List<Tmio1Ruta> findAll();
+	public List<Tmio1Ruta> findByDescripcion(String des);
 }

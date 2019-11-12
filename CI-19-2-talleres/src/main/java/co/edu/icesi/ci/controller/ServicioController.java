@@ -100,9 +100,9 @@ public class ServicioController {
 	public String editService(Model model, @PathVariable("id") Integer id, @PathVariable("ced") String ced, @PathVariable("idR") Integer idR, @PathVariable("fi") long fi, @PathVariable("ff") long ff) {
 		Tmio1ServicioWrapper w = new Tmio1ServicioWrapper();
 		try {
-			Optional<Tmio1Servicio> s= servicioServicio.consultarServicio(id, ced, idR, new Date(fi), new Date(ff));
-			if(s.isPresent()) {
-				Tmio1Servicio ser= s.get();
+			Tmio1Servicio s= servicioServicio.consultarServicio(id, ced, idR, new Date(fi), new Date(ff));
+			if(s!= null) {
+				Tmio1Servicio ser= s;
 				Tmio1ServicioPK pk = ser.getId();
 				w.setCedulaConductor(pk.getCedulaConductor());
 				w.setCedulaConductorViejo(pk.getCedulaConductor());
@@ -144,13 +144,13 @@ public class ServicioController {
 			} else {
 				Tmio1Servicio ser= new Tmio1Servicio();
 				try {
-					Optional<Tmio1Servicio> s= servicioServicio.consultarServicio(Integer.parseInt(tmio1ServicioWrapper.getIdBusViejo()), tmio1ServicioWrapper.getCedulaConductorViejo(), Integer.parseInt(tmio1ServicioWrapper.getRutaIdViejo()), tmio1ServicioWrapper.getFechaInicioViejo(), tmio1ServicioWrapper.getFechaFinViejo());
-					if(s.isPresent()) {
+					Tmio1Servicio s= servicioServicio.consultarServicio(Integer.parseInt(tmio1ServicioWrapper.getIdBusViejo()), tmio1ServicioWrapper.getCedulaConductorViejo(), Integer.parseInt(tmio1ServicioWrapper.getRutaIdViejo()), tmio1ServicioWrapper.getFechaInicioViejo(), tmio1ServicioWrapper.getFechaFinViejo());
+					if(s!= null) {
 						
 						
-						ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(tmio1ServicioWrapper.getIdBus())).get());
-						ser.setTmio1Conductore(servicioConductor.consultarConductor(tmio1ServicioWrapper.getCedulaConductor()).get());
-						ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(tmio1ServicioWrapper.getRutaId())).get());
+						ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(tmio1ServicioWrapper.getIdBus())));
+						ser.setTmio1Conductore(servicioConductor.consultarConductor(tmio1ServicioWrapper.getCedulaConductor()));
+						ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(tmio1ServicioWrapper.getRutaId())));
 						
 						Tmio1ServicioPK pk = new Tmio1ServicioPK();
 						pk.setCedulaConductor(tmio1ServicioWrapper.getCedulaConductor());
@@ -162,7 +162,7 @@ public class ServicioController {
 						ser.setId(pk);
 						
 						servicioServicio.actualizarServicio(ser);
-						servicioServicio.removerServicio(s.get());
+						servicioServicio.removerServicio(s);
 					}
 					
 				}catch(Exception e) {

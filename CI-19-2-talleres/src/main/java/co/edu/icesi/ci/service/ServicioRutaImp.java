@@ -5,7 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.icesi.ci.dao.Tmio1RutaDao;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 import co.edu.icesi.ci.talleres.repositories.RutasRepository;
 
@@ -13,8 +16,9 @@ import co.edu.icesi.ci.talleres.repositories.RutasRepository;
 public class ServicioRutaImp implements ServicioRuta {
 
 	@Autowired
-	private RutasRepository repositorio;
+	private Tmio1RutaDao repositorio;
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Ruta guardarRuta(Tmio1Ruta c) throws Exception {
 		if(c == null) {
 			throw new Exception( "No se pueden agregar rutas nulas");
@@ -31,34 +35,40 @@ public class ServicioRutaImp implements ServicioRuta {
 				|| (c.getDiaInicio().equals(new BigDecimal(7))&&c.getDiaFin().equals(new BigDecimal(7))))){
 			throw new Exception("Ruta con rango de horario no valido");
 		}
-		return repositorio.save(c);
+		repositorio.save(c);
+		return c;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Ruta removerRuta(Tmio1Ruta ruta) throws Exception {
 		repositorio.delete(ruta);
 		return ruta;
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Tmio1Ruta actualizarRuta(Tmio1Ruta Ruta) throws Exception {
-		
-		return repositorio.save(Ruta);
+		repositorio.update(Ruta);
+		return Ruta;
 	}
 
 	@Override
-	public Optional<Tmio1Ruta> consultarRuta(Integer id) throws Exception {
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public Tmio1Ruta consultarRuta(Integer id) throws Exception {
 		
 		return repositorio.findById(id);
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Ruta> findAll() {
 		
 		return repositorio.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Iterable<Tmio1Ruta> findByDescripcion(String des) {
 		return repositorio.findByDescripcion(des);
 	}
