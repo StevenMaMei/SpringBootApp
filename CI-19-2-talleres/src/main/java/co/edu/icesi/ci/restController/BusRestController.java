@@ -1,9 +1,33 @@
 package co.edu.icesi.ci.restController;
 
-public class BusRestController {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-	public BusRestController() {
-		// TODO Auto-generated constructor stub
+import co.edu.icesi.ci.service.ServicioBus;
+import co.edu.icesi.ci.talleres.model.Tmio1Bus;
+
+@RestController
+public class BusRestController {
+	@Autowired
+	private ServicioBus servicio;
+	
+	@GetMapping("/buses/")
+	public Iterable<Tmio1Bus> indexBuses() {
+		return servicio.findAll();
+	}
+	
+	@PostMapping("/buses/")
+	public void saveBus(@RequestBody Tmio1Bus bus) throws Exception {
+		servicio.guardarBus(bus);
+	}
+	
+	@GetMapping("/buses/search/findByPlaca")
+	public Iterable<Tmio1Bus> findByPlaca(@RequestBody String placa) throws Exception {
+		return servicio.consultarBus(placa);
 	}
 
 }
