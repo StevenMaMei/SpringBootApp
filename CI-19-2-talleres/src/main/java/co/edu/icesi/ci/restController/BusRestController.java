@@ -15,17 +15,17 @@ public class BusRestController {
 	@Autowired
 	private ServicioBus servicio;
 	
-	@GetMapping("/buses/")
+	@GetMapping("/api/buses/")
 	public Iterable<Tmio1Bus> indexBuses() {
 		return servicio.findAll();
 	}
 	
-	@PostMapping("/buses/")
+	@PostMapping("/api/buses/")
 	public void saveBus(@RequestBody Tmio1Bus bus) throws Exception {
 		servicio.guardarBus(bus);
 	}
 	
-	@GetMapping("/buses/search/findByPlaca")
+	@GetMapping("/api/buses/search/findByPlaca")
 	public Iterable<Tmio1Bus> findByPlaca(@RequestBody String placa) throws Exception {
 		return servicio.consultarBus(placa);
 	}
