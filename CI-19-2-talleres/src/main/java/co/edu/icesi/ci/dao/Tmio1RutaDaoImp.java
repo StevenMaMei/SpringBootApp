@@ -78,7 +78,7 @@ public class Tmio1RutaDaoImp implements Tmio1RutaDao{
 	public List<Tmio1Ruta> findByDescripcion(String des) {
 		String jpql= "Select t "
 				+ "from Tmio1Ruta t "
-				+ "where t.des = :dess";
+				+ "where t.descripcion = :dess";
 		
 		List<Tmio1Ruta> con= entityManager.createQuery(jpql).setParameter("dess", des).getResultList();
 		return con;
