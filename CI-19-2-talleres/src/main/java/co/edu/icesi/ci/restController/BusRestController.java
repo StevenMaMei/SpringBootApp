@@ -1,6 +1,7 @@
 package co.edu.icesi.ci.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,18 +16,18 @@ public class BusRestController {
 	@Autowired
 	private ServicioBus servicio;
 	
-	@GetMapping("/buses/")
+	@GetMapping("/api/buses/")
 	public Iterable<Tmio1Bus> indexBuses() {
 		return servicio.findAll();
 	}
 	
-	@PostMapping("/buses/")
+	@PostMapping("/api/buses/")
 	public void saveBus(@RequestBody Tmio1Bus bus) throws Exception {
 		servicio.guardarBus(bus);
 	}
 	
-	@GetMapping("/buses/search/findByPlaca")
-	public Iterable<Tmio1Bus> findByPlaca(@RequestBody String placa) throws Exception {
+	@GetMapping("/api/buses/search/findByPlaca")
+	public Iterable<Tmio1Bus> findByPlaca(@Param("placa") String placa) throws Exception {
 		return servicio.consultarBus(placa);
 	}
 
