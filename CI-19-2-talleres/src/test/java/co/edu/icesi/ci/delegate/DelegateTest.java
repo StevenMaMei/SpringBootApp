@@ -25,6 +25,8 @@ public class DelegateTest {
 	ServicioServicio servicioServicio;
 	
 	@Autowired
+	Delegate delegado;
+	@Autowired
 	@InjectMocks
 	BusRestController busController;
 	
@@ -32,5 +34,8 @@ public class DelegateTest {
 	public void initMocks() {
 		MockitoAnnotations.initMocks(this);
 	}
+	
+	@Test
+	public void test
 
 }
