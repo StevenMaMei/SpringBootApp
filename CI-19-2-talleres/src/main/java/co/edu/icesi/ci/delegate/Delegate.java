@@ -133,7 +133,6 @@ public class Delegate {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
-		response.getBody();
 	}
 
 	public Tmio1Conductore findConductorByCedula(String cedula) {
@@ -186,7 +185,6 @@ public class Delegate {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
-		response.getBody();
 	}
 	
 	public Tmio1Ruta findRutaByDescripcion(String descripcion) {

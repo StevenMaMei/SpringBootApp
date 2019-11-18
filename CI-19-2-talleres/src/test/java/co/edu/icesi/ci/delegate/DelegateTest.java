@@ -2,6 +2,7 @@ package co.edu.icesi.ci.delegate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -116,7 +117,44 @@ public class DelegateTest {
 		assertEquals(conductor1, res.get(1));
 	}
 	
+	@Test
+	public void testSaveConductor() {
+		Tmio1Conductore cond = new Tmio1Conductore();
+		cond.setApellidos("ma");
+		cond.setCedula("123");
+		cond.setFechaContratacion(new Date(100, 10, 17));
+		cond.setFechaNacimiento(new Date(99, 1, 1));
+		cond.setNombre("se");
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Conductore> transaction= new TransactionBody<>("apiContext",cond);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Conductore>> response = null;
+		when(rest.exchange(REST_URI + "/conductores/", HttpMethod.POST, request,
+				new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
+		})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Conductore>>(new TransactionBody<>(),HttpStatus.ACCEPTED));
+		try {
+			delegado.saveConductor(cond);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
 	public void testFindConductorByCedula() {
+		Tmio1Conductore conductor = new Tmio1Conductore();
+		conductor.setApellidos("ma");
+		conductor.setCedula("123");
+		conductor.setFechaContratacion(new Date(100, 10, 17));
+		conductor.setFechaNacimiento(new Date(99, 1, 1));
+		conductor.setNombre("se");
+				
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		
+		when(rest.exchange(REST_URI + "/conductores/search/findByCedula?cedula=123", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Conductore>>(new TransactionBody("conductor",conductor), HttpStatus.ACCEPTED));
+		
+		Tmio1Conductore res = delegado.findConductorByCedula("123");
+		assertEquals(conductor, res);
 		
 	}
 	
@@ -154,7 +192,87 @@ public class DelegateTest {
 		assertEquals(ruta, res.get(0));
 		assertEquals(ruta2, res.get(1));
 		
+	}
+	
+	@Test
+	public void testSaveRuta() {
+		Tmio1Ruta ruta= new Tmio1Ruta();
+		ruta.setActiva("a");
+		ruta.setDescripcion("a");
+		ruta.setDiaFin(new BigDecimal(6));
+		ruta.setDiaInicio(new BigDecimal(1));
+		ruta.setHoraFin(new BigDecimal("2"));
+		ruta.setHoraInicio(new BigDecimal("1"));
+		ruta.setNumero("1");
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Ruta> transaction= new TransactionBody<>("apiContext",ruta);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Ruta>> response = null;
+		when(rest.exchange(REST_URI + "/rutas/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Ruta>>(new TransactionBody<>(),HttpStatus.ACCEPTED));
+		try {
+			delegado.saveRuta(ruta);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testFindRutaByDescripcion () {
+		Tmio1Ruta ruta= new Tmio1Ruta();
+		ruta.setActiva("a");
+		ruta.setDescripcion("a");
+		ruta.setDiaFin(new BigDecimal(6));
+		ruta.setDiaInicio(new BigDecimal(1));
+		ruta.setHoraFin(new BigDecimal("2"));
+		ruta.setHoraInicio(new BigDecimal("1"));
+		ruta.setNumero("1");
+				
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
 		
+		when(rest.exchange(REST_URI + "/rutas/search/findByDescripcion?descripcion=a", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Ruta>>(new TransactionBody("ruta",ruta), HttpStatus.ACCEPTED));
+		Tmio1Ruta res = delegado.findRutaByDescripcion("a");
+		assertEquals(ruta, res);
+	
+	}
+	
+	@Test
+	public void saveBusTest() {
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Bus> transaction= new TransactionBody<>("apiContext",bus);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Bus>> response = null;
+		when(rest.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Bus>>(new TransactionBody<>(),HttpStatus.ACCEPTED));
+		try {
+			delegado.saveBus(bus);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void buscarBusTest() {
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		ArrayList<Tmio1Bus> buses = new ArrayList<>();
+		buses.add(bus);
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		when(rest.exchange(REST_URI + "/buses/search/findByPlaca?placa=123", HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>>(new TransactionBody<>("a",buses),HttpStatus.ACCEPTED));
+		
+		ArrayList<Tmio1Bus> buss = (ArrayList<Tmio1Bus>) delegado.buscarBus("123");
+		assertTrue(buss.size()==1);
+		assertTrue(buss.get(0).getPlaca().equals("123"));
 	}
 
 }
