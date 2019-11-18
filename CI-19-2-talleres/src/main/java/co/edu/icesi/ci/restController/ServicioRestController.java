@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.icesi.ci.delegate.TransactionBody;
 import co.edu.icesi.ci.service.ServicioBus;
 import co.edu.icesi.ci.service.ServicioConductor;
 import co.edu.icesi.ci.service.ServicioRuta;
@@ -35,8 +36,8 @@ public class ServicioRestController {
 	private ServicioRuta servicioRuta;
 
 	@GetMapping("/api/servicios/")
-	public Iterable<Tmio1Servicio> getIndex(){
-		return servicioServicio.findAll();
+	public TransactionBody<Iterable<Tmio1Servicio>> getIndex(){
+		return new TransactionBody<>("servicios",servicioServicio.findAll());
 	}
 
 	@PostMapping("/api/servicios/")
@@ -71,7 +72,7 @@ public class ServicioRestController {
 	}
 	
 	@GetMapping("/api/servicios/find")
-	public Iterable<Tmio1Servicio> buscar(@Param("fecha") Date fecha) {
-		return servicioServicio.findByDate(fecha);
+	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") Date fecha) {
+		return new TransactionBody<>("servicios",servicioServicio.findByDate(fecha));
 	}
 }

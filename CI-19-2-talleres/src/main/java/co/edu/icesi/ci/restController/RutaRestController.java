@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.icesi.ci.delegate.TransactionBody;
 import co.edu.icesi.ci.service.ServicioRuta;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 
@@ -17,8 +18,8 @@ public class RutaRestController {
 	private ServicioRuta servicio;
 	
 	@GetMapping("/api/rutas/")
-	public Iterable<Tmio1Ruta> getRutas(){
-		return servicio.findAll();
+	public TransactionBody<Iterable<Tmio1Ruta>> getRutas(){
+		return new TransactionBody<>("rutas",servicio.findAll());
 	}
 	
 	@PostMapping("/api/rutas/")
@@ -27,8 +28,8 @@ public class RutaRestController {
 	}
 	
 	@GetMapping("/api/rutas/search/findByDescripcion")
-	public Iterable<Tmio1Ruta> findByDescripcion(@Param("descripcion") String descripcion){
-		return servicio.findByDescripcion(descripcion);
+	public TransactionBody<Iterable<Tmio1Ruta>> findByDescripcion(@Param("descripcion") String descripcion){
+		return new TransactionBody<>("rutas", servicio.findByDescripcion(descripcion));
 	}
 
 }

@@ -30,8 +30,8 @@ public class BusRestController {
 	}
 	
 	@GetMapping("/api/buses/search/findByPlaca")
-	public ArrayList<Tmio1Bus> findByPlaca(@Param("placa") String placa) throws Exception {
-		return servicio.consultarBus(placa);
+	public TransactionBody<ArrayList<Tmio1Bus>> findByPlaca(@Param("placa") String placa) throws Exception {
+		return new TransactionBody<ArrayList<Tmio1Bus>>("buses", servicio.consultarBus(placa));
 	}
 
 }
