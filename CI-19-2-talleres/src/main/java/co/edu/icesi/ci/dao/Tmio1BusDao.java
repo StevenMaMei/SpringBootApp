@@ -1,6 +1,7 @@
 package co.edu.icesi.ci.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +14,10 @@ public interface Tmio1BusDao {
 	public void delete(Tmio1Bus entity);
 	public Tmio1Bus findByPlaca(String placa);
 	public Tmio1Bus findById(Integer id);
-	public List<Tmio1Bus> findByMarca(String marca);
-	public List<Tmio1Bus> findByModelo(BigDecimal modelo);
-	public List<Tmio1Bus> consultaAdicional(Date fecha);
-	public List<Tmio1Bus> findAll();
+	public ArrayList<Tmio1Bus> findByMarca(String marca);
+	public ArrayList<Tmio1Bus> findByModelo(BigDecimal modelo);
+	public ArrayList<Tmio1Bus> consultaAdicional(Date fecha);
+	public ArrayList<Tmio1Bus> findAll();
 	
 	
 }

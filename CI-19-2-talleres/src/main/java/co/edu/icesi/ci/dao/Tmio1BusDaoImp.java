@@ -2,6 +2,7 @@ package co.edu.icesi.ci.dao;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,39 +51,40 @@ public class Tmio1BusDaoImp implements Tmio1BusDao {
 	}
 
 	@Override
-	public List<Tmio1Bus> findByMarca(String marca) {
+	public ArrayList<Tmio1Bus> findByMarca(String marca) {
 		String jpql= "Select b"
 				+ " from Tmio1Bus b "
 				+ "where b.marca ="+"'"+marca+"'";
 		
 		List<Tmio1Bus> consulta = entityManager.createQuery(jpql).getResultList();
 
-		return consulta;
+		return new ArrayList<>(consulta);
 	}
 
 	@Override
-	public List<Tmio1Bus> findByModelo(BigDecimal modelo) {
+	public ArrayList<Tmio1Bus> findByModelo(BigDecimal modelo) {
 		String jpql= "Select b"
 				+ " from Tmio1Bus b "
 				+ "where b.placa ="+"'"+modelo.toString()+"'";
 		
 		List<Tmio1Bus> consulta = entityManager.createQuery(jpql).getResultList();
 
-		return consulta;
+		return new ArrayList<>(consulta);
 	}
 
 	@Override
-	public List<Tmio1Bus> findAll() {
+	public ArrayList<Tmio1Bus> findAll() {
 		String jpql = "Select a from Tmio1Bus a";
-		return 	entityManager.createQuery(jpql).getResultList();
+		
+		return 	new ArrayList<>(entityManager.createQuery(jpql).getResultList());
 	}
 
 	@Override
-	public List<Tmio1Bus> consultaAdicional(Date fecha) {
+	public ArrayList<Tmio1Bus> consultaAdicional(Date fecha) {
 		String jpql = "Select  t "
 				+ "From Tmio1Bus t "
 				+ "Where 1< (select count(k.id.idBus) From Tmio1Servicio k Where k.id.idBus = t.id  AND k.id.fechaInicio<= :thedate AND k.id.fechaFin >= :thedate  )";
-		return entityManager.createQuery(jpql).setParameter("thedate", fecha).getResultList();
+		return new ArrayList<>(entityManager.createQuery(jpql).setParameter("thedate", fecha).getResultList());
 		//
 		//
 	}
