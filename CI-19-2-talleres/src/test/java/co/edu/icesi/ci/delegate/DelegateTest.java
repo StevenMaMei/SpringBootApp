@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -32,6 +33,8 @@ import co.edu.icesi.ci.service.ServicioConductor;
 import co.edu.icesi.ci.service.ServicioRuta;
 import co.edu.icesi.ci.service.ServicioServicio;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
+import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
+import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DelegateTest {
@@ -78,6 +81,80 @@ public class DelegateTest {
 		assertTrue(res.size()==2);
 		assertEquals(res.get(0), bus1);
 		assertEquals(res.get(1), bus);
+	}
+	
+	@Test
+	public void testGetConductores() {
+		Tmio1Conductore conductor = new Tmio1Conductore();
+		conductor.setCedula("1140");
+		conductor.setNombre("Alan");
+		conductor.setApellidos("Gore");
+		conductor.setFechaNacimiento(Date.valueOf("1996-04-29"));
+		conductor.setFechaNacimiento(Date.valueOf("2019-01-01"));
+		
+		Tmio1Conductore conductor1 = new Tmio1Conductore();
+		conductor1.setCedula("9604");
+		conductor1.setNombre("Stev");
+		conductor1.setApellidos("Univ");
+		conductor1.setFechaNacimiento(Date.valueOf("1998-02-02"));
+		conductor1.setFechaNacimiento(Date.valueOf("2019-02-01"));
+		
+		ArrayList<Tmio1Conductore> conductores = new ArrayList<>();
+		
+		conductores.add(conductor);
+		conductores.add(conductor1);
+		
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		
+		when(rest.exchange(REST_URI + "/conductores/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Conductore>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Conductore>>>(new TransactionBody("conductores",conductores), HttpStatus.ACCEPTED));
+
+		
+		ArrayList<Tmio1Conductore> res = (ArrayList) delegado.getConductores();
+		assertTrue(res.size()==2);
+		assertEquals(conductor, res.get(0));
+		assertEquals(conductor1, res.get(1));
+	}
+	
+	public void testFindConductorByCedula() {
+		
+	}
+	
+	@Test
+	public void testGetRutas() {
+		Tmio1Ruta ruta= new Tmio1Ruta();
+		ruta.setActiva("a");
+		ruta.setDescripcion("a");
+		ruta.setDiaFin(new BigDecimal(6));
+		ruta.setDiaInicio(new BigDecimal(1));
+		ruta.setHoraFin(new BigDecimal("2"));
+		ruta.setHoraInicio(new BigDecimal("1"));
+		ruta.setNumero("1");
+		
+		Tmio1Ruta ruta2= new Tmio1Ruta();
+		ruta2.setActiva("a");
+		ruta2.setDescripcion("b");
+		ruta2.setDiaFin(new BigDecimal(6));
+		ruta2.setDiaInicio(new BigDecimal(1));
+		ruta2.setHoraFin(new BigDecimal("2"));
+		ruta2.setHoraInicio(new BigDecimal("1"));
+		ruta2.setNumero("1");
+		
+		ArrayList<Tmio1Ruta> rutas = new ArrayList<>();
+		rutas.add(ruta);
+		rutas.add(ruta2);
+		
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		
+		when(rest.exchange(REST_URI + "/rutas/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Ruta>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Ruta>>>(new TransactionBody("rutas",rutas), HttpStatus.ACCEPTED));
+
+		ArrayList<Tmio1Ruta> res = (ArrayList) delegado.getRutas();
+		assertTrue(res.size()==2);
+		assertEquals(ruta, res.get(0));
+		assertEquals(ruta2, res.get(1));
+		
+		
 	}
 
 }
