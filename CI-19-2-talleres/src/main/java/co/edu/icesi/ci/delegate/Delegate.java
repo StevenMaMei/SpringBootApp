@@ -1,5 +1,7 @@
 package co.edu.icesi.ci.delegate;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
+import co.edu.icesi.ci.talleres.model.Tmio1Servicio;
+import co.edu.icesi.ci.talleres.model.Tmio1ServicioWrapper;
 
 public class Delegate {
 
@@ -43,7 +47,40 @@ public class Delegate {
 		response = restTemplate.exchange(REST_URI + "/buses/search/findByPlaca?placa="+placa, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
 		return response.getBody().getBody();
 	}
-
+	
+	public Iterable<Tmio1Servicio> getServicios(){
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>> response = null;
+		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
+		return response.getBody().getBody();
+	}
+	
+	public void saveServicio(Tmio1ServicioWrapper w) {
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
+		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
+		
+	}
+	
+	public void updateServicio(Tmio1ServicioWrapper w) {
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
+		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.PUT, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
+		
+	}
+	
+	public Iterable<Tmio1Servicio> findServicioByDate(Date fecha) {
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>> response = null;
+		response = restTemplate.exchange(REST_URI + "/buses/search/find?fecha="+fecha, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
+		return response.getBody().getBody();
+	}
 	public Iterable<Tmio1Conductore> getConductores() throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
