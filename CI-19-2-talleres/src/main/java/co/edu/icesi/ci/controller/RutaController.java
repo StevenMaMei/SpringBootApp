@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.edu.icesi.ci.delegate.Delegate;
 import co.edu.icesi.ci.service.ServicioRuta;
-import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 
 @Controller
 public class RutaController {
 	@Autowired
 	private ServicioRuta servicio;
+	@Autowired
+	private Delegate delegate;
 	@GetMapping("/rutas/")
 	public String getIndex(Model model) {
-		model.addAttribute("rutas", servicio.findAll());
+//		model.addAttribute("rutas", servicio.findAll());
+		model.addAttribute("rutas",delegate.getRutas());
 		return "rutas/index";
 	}
 	@GetMapping("/rutas/add")
@@ -37,7 +40,8 @@ public class RutaController {
 				return "/rutas/add";
 			} else {
 				try {
-					servicio.guardarRuta(tmio1Ruta);	
+//					servicio.guardarRuta(tmio1Ruta);	
+					delegate.saveRuta(tmio1Ruta);
 					
 				}catch(Exception e) {
 
@@ -62,7 +66,8 @@ public class RutaController {
 	@GetMapping("/rutas/buscar/")
 	public String buscar(Model model,@RequestParam("descripcion")String des ) {
 		try {
-			model.addAttribute("rutas",servicio.findByDescripcion(des));
+//			model.addAttribute("rutas",servicio.findByDescripcion(des));
+			model.addAttribute("rutas",delegate.findRutaByDescripcion(des));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

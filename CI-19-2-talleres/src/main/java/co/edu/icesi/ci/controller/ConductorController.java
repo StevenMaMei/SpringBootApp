@@ -1,7 +1,6 @@
 package co.edu.icesi.ci.controller;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,17 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.edu.icesi.ci.delegate.Delegate;
 import co.edu.icesi.ci.service.ServicioConductor;
-import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 
 @Controller
 public class ConductorController {
+//	@Autowired
+//	private ServicioConductor servicio;
 	@Autowired
-	private ServicioConductor servicio;
+	private Delegate delegate;
 	@GetMapping("/conductores/")
 	public String getIndex(Model model) {
-		model.addAttribute("conductores", servicio.findAll());
+//		model.addAttribute("conductores", servicio.findAll());
+		model.addAttribute("conductores", delegate.getConductores());
 		return "/conductores/index";
 	}
 	@GetMapping("/conductores/add")
@@ -41,7 +43,8 @@ public class ConductorController {
 				return "/conductores/add";
 			} else {
 				try {
-					servicio.guardarConductor(tmio1Conductore);	
+//					servicio.guardarConductor(tmio1Conductore);	
+					delegate.saveConductor(tmio1Conductore);
 					
 				}catch(Exception e) {
 
@@ -64,7 +67,8 @@ public class ConductorController {
 	public String buscar(Model model,@RequestParam("cedula")String cedula ) {
 		try {
 			ArrayList<Tmio1Conductore> conducs= new ArrayList<>();
-			Tmio1Conductore con= servicio.consultarConductor(cedula);
+//			Tmio1Conductore con= servicio.consultarConductor(cedula);
+			Tmio1Conductore con= delegate.findConductorByCedula(cedula);
 			if(con!= null) {
 				conducs.add(con);
 			}else {

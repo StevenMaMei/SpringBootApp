@@ -1,29 +1,36 @@
 package co.edu.icesi.ci.delegate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 
+@Component
 public class Delegate {
 
-	public final static String REST_URI = "localhost:8080/api";
+	public final static String REST_URI = "http://localhost:8080/api";
 
-	@Autowired
-	private RestTemplate restTemplate;
+	private RestTemplate restTemplate = new RestTemplate();
 
 	public Iterable<Tmio1Bus> getBuses() {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+		try {
+			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		return response.getBody().getBody();
 	}
 	
@@ -32,7 +39,12 @@ public class Delegate {
 		TransactionBody<Tmio1Bus> transaction= new TransactionBody<>("apiContext",bus);
 		HttpEntity request = new HttpEntity(transaction);
 		ResponseEntity<TransactionBody<Tmio1Bus>> response = null;
-		response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){});
+		try {
+			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){});			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		
 	}
 	
@@ -40,29 +52,48 @@ public class Delegate {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/buses/search/findByPlaca?placa="+placa, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+		try {
+			response = restTemplate.exchange(REST_URI + "/buses/search/findByPlaca?placa="+placa, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		
 		return response.getBody().getBody();
 	}
 
-	public Iterable<Tmio1Conductore> getConductores() throws Exception {
+	public Iterable<Tmio1Conductore> getConductores() {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Conductore>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/conductores/", HttpMethod.GET, request,
-				new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Conductore>>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/conductores/", HttpMethod.GET, request,
+					new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Conductore>>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		return response.getBody().getBody();
 	}
 
-	public void saveConductor(Tmio1Conductore conductor) throws Exception {
+	public void saveConductor(Tmio1Conductore conductor) {
 		HttpHeaders headerAct = new HttpHeaders();
 
 		TransactionBody<Tmio1Conductore> transaction = new TransactionBody<>("apiContext", conductor);
 		HttpEntity request = new HttpEntity(transaction);
 		ResponseEntity<TransactionBody<Tmio1Conductore>> response = null;
-		response = restTemplate.exchange(REST_URI + "/conductores/", HttpMethod.POST, request,
-				new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/conductores/", HttpMethod.POST, request,
+					new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		response.getBody();
 	}
 
@@ -73,9 +104,15 @@ public class Delegate {
 		// Posiblemente haya que cambiar esto y lo de los RestControllers si el profe
 		// quiere que consigan datos tipo conductores/{id}. Esto se
 		// realizo en el ejemplo mostrado en clase.
-		response = restTemplate.exchange(REST_URI + "/conductores/search/findByCedula?cedula=" + cedula, HttpMethod.GET,
-				request, new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/conductores/search/findByCedula?cedula=" + cedula, HttpMethod.GET,
+					request, new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		return response.getBody().getBody();
 	}
 
@@ -83,9 +120,15 @@ public class Delegate {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Ruta>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/rutas/", HttpMethod.GET, request,
-				new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Ruta>>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/rutas/", HttpMethod.GET, request,
+					new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Ruta>>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		return response.getBody().getBody();
 	}
 
@@ -95,9 +138,15 @@ public class Delegate {
 		TransactionBody<Tmio1Ruta> transaction = new TransactionBody<>("apiContext", ruta);
 		HttpEntity request = new HttpEntity(transaction);
 		ResponseEntity<TransactionBody<Tmio1Ruta>> response = null;
-		response = restTemplate.exchange(REST_URI + "/rutas/", HttpMethod.POST, request,
-				new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/rutas/", HttpMethod.POST, request,
+					new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		response.getBody();
 	}
 	
@@ -105,9 +154,15 @@ public class Delegate {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Tmio1Ruta>> response = null;
-		response = restTemplate.exchange(REST_URI + "/rutas/search/findByDescripcion?descripcion=" + descripcion, HttpMethod.GET,
-				request, new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>() {
-				});
+		try {
+			response = restTemplate.exchange(REST_URI + "/rutas/search/findByDescripcion?descripcion=" + descripcion, HttpMethod.GET,
+					request, new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>() {
+			});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 		return response.getBody().getBody();
 	}
 	

@@ -1,32 +1,32 @@
 package co.edu.icesi.ci.controller;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.edu.icesi.ci.delegate.Delegate;
 import co.edu.icesi.ci.service.ServicioBus;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 
 
 @Controller
 public class BusController {
+//	@Autowired
+//	private ServicioBus servicio;
+	
 	@Autowired
-	private ServicioBus servicio;
+	private Delegate delegate;
 	
 	@GetMapping("/buses/")
 	public String indexBuses(Model model) {
-		model.addAttribute("buses",servicio.findAll());
+//		model.addAttribute("buses",servicio.findAll());
+		model.addAttribute("buses",delegate.getBuses());
 		return "buses/index";
 	}
 	@GetMapping("/buses/add")
@@ -43,8 +43,8 @@ public class BusController {
 				return "buses/add";
 			} else {
 				try {
-					servicio.guardarBus(tmio1Bus);	
-					
+//					servicio.guardarBus(tmio1Bus);
+					delegate.saveBus(tmio1Bus);
 				}catch(Exception e) {
 
 					if(e.getMessage().equals("ya existe un bus con esa placa")) {
@@ -65,7 +65,8 @@ public class BusController {
 	@GetMapping("/buses/buscar/")
 	public String buscar(Model model,@RequestParam("placa")String placa ) {
 		try {
-			model.addAttribute("buses",servicio.consultarBus(placa));
+//			model.addAttribute("buses",servicio.consultarBus(placa));
+			model.addAttribute("buses",delegate.buscarBus(placa));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
