@@ -22,13 +22,29 @@ public class Delegate {
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>> response = null;
 		
-		try {
-			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+	
+		response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+		
 		return response.getBody().getBody();
 	}
+	
+	public void saveBus(Tmio1Bus bus) {
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Bus> transaction= new TransactionBody<>("apiContext",bus);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Bus>> response = null;
+		response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){});
+		
+	}
+	
+	public Iterable<Tmio1Bus> buscarBus(String placa) {
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>> response = null;
+		response = restTemplate.exchange(REST_URI + "/buses/search/findByPlaca?placa="+placa, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+		return response.getBody().getBody();
+	}
+	
 	
 
 }
