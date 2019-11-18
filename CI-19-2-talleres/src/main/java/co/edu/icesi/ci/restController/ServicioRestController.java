@@ -41,28 +41,30 @@ public class ServicioRestController {
 	}
 
 	@PostMapping("/api/servicios/")
-	public void saveServicio(@RequestBody Tmio1ServicioWrapper tmio1ServicioWrapper) throws NumberFormatException, Exception {
-		servicioServicio.guardarServicio(Integer.parseInt(tmio1ServicioWrapper.getIdBus()), tmio1ServicioWrapper.getCedulaConductor(), Integer.parseInt(tmio1ServicioWrapper.getRutaId()), tmio1ServicioWrapper.getFechaInicio(), tmio1ServicioWrapper.getFechaFin());	
+	public void saveServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
+		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
+		servicioServicio.guardarServicio(Integer.parseInt(t.getIdBus()), t.getCedulaConductor(), Integer.parseInt(t.getRutaId()), t.getFechaInicio(), t.getFechaFin());	
 	}
 
 	@PutMapping("/api/servicios/")
-	public void updateServicio(@RequestBody Tmio1ServicioWrapper tmio1ServicioWrapper) throws NumberFormatException, Exception {
+	public void updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
 		Tmio1Servicio ser= new Tmio1Servicio();
+		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
 
-		Tmio1Servicio s= servicioServicio.consultarServicio(Integer.parseInt(tmio1ServicioWrapper.getIdBusViejo()), tmio1ServicioWrapper.getCedulaConductorViejo(), Integer.parseInt(tmio1ServicioWrapper.getRutaIdViejo()), tmio1ServicioWrapper.getFechaInicioViejo(), tmio1ServicioWrapper.getFechaFinViejo());
+		Tmio1Servicio s= servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
 		if(s!= null) {
 
-
-			ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(tmio1ServicioWrapper.getIdBus())));
-			ser.setTmio1Conductore(servicioConductor.consultarConductor(tmio1ServicioWrapper.getCedulaConductor()));
-			ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(tmio1ServicioWrapper.getRutaId())));
+			
+			ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(t.getIdBus())));
+			ser.setTmio1Conductore(servicioConductor.consultarConductor(t.getCedulaConductor()));
+			ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(t.getRutaId())));
 
 			Tmio1ServicioPK pk = new Tmio1ServicioPK();
-			pk.setCedulaConductor(tmio1ServicioWrapper.getCedulaConductor());
-			pk.setFechaFin(tmio1ServicioWrapper.getFechaFin());
-			pk.setFechaInicio(tmio1ServicioWrapper.getFechaInicio());
-			pk.setIdBus(Integer.parseInt(tmio1ServicioWrapper.getIdBus()));
-			pk.setIdRuta(Integer.parseInt(tmio1ServicioWrapper.getRutaId()));
+			pk.setCedulaConductor(t.getCedulaConductor());
+			pk.setFechaFin(t.getFechaFin());
+			pk.setFechaInicio(t.getFechaInicio());
+			pk.setIdBus(Integer.parseInt(t.getIdBus()));
+			pk.setIdRuta(Integer.parseInt(t.getRutaId()));
 
 			ser.setId(pk);
 
