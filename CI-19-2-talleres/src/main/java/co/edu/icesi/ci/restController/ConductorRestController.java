@@ -23,8 +23,8 @@ public class ConductorRestController {
 	}
 	
 	@PostMapping("/api/conductores/")
-	public void saveConductor(@RequestBody Tmio1Conductore conductor) throws Exception{
-		servicio.guardarConductor(conductor);
+	public void saveConductor(@RequestBody TransactionBody<Tmio1Conductore> conductor) throws Exception{
+		servicio.guardarConductor(conductor.getBody());
 	}
 	
 	@GetMapping("/api/conductores/search/findByCedula")
