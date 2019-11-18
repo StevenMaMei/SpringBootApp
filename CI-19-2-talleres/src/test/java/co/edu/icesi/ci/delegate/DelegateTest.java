@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,11 @@ import co.edu.icesi.ci.service.ServicioConductor;
 import co.edu.icesi.ci.service.ServicioRuta;
 import co.edu.icesi.ci.service.ServicioServicio;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
+import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
+import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
+import co.edu.icesi.ci.talleres.model.Tmio1Servicio;
+import co.edu.icesi.ci.talleres.model.Tmio1ServicioPK;
+import co.edu.icesi.ci.talleres.model.Tmio1ServicioWrapper;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DelegateTest {
@@ -119,6 +125,210 @@ public class DelegateTest {
 		assertTrue(buss.size()==1);
 		assertTrue(buss.get(0).getPlaca().equals("123"));
 		
+	}
+	
+	@Test
+	public void getServicios() {
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		
+		Tmio1Bus bus1 = new Tmio1Bus();
+		bus1.setCapacidad(new BigDecimal("12"));
+		bus1.setMarca("che");
+		bus1.setModelo(new BigDecimal("123"));
+		bus1.setTipo("A");	
+		bus1.setPlaca("124");
+		
+		Tmio1Ruta ruta= new Tmio1Ruta();
+		ruta.setActiva("a");
+		ruta.setDescripcion("a");
+		ruta.setDiaFin(new BigDecimal(6));
+		ruta.setDiaInicio(new BigDecimal(1));
+		ruta.setHoraFin(new BigDecimal("2"));
+		ruta.setHoraInicio(new BigDecimal("1"));
+		ruta.setNumero("1");
+		
+		Tmio1Ruta ruta2= new Tmio1Ruta();
+		ruta2.setActiva("a");
+		ruta2.setDescripcion("b");
+		ruta2.setDiaFin(new BigDecimal(6));
+		ruta2.setDiaInicio(new BigDecimal(1));
+		ruta2.setHoraFin(new BigDecimal("2"));
+		ruta2.setHoraInicio(new BigDecimal("1"));
+		ruta2.setNumero("1");
+		
+		Tmio1Conductore cond = new Tmio1Conductore();
+		cond.setApellidos("ma");
+		cond.setCedula("123");
+		cond.setFechaContratacion(new Date(100, 10, 17));
+		cond.setFechaNacimiento(new Date(99, 1, 1));
+		cond.setNombre("se");
+		
+		Tmio1ServicioPK pk1= new Tmio1ServicioPK();
+		pk1.setIdBus(bus.getId());
+		pk1.setFechaInicio(new Date(119, 10, 25));
+		pk1.setFechaFin(new Date(119,10,31));
+		pk1.setCedulaConductor(cond.getCedula());
+		pk1.setIdRuta(ruta.getId());
+		
+		Tmio1Servicio s1= new Tmio1Servicio();
+		s1.setTmio1Bus(bus);
+		s1.setId(pk1);
+		s1.setTmio1Conductore(cond);
+		s1.setTmio1Ruta(ruta);
+		
+		Tmio1ServicioPK pk2= new Tmio1ServicioPK();
+		pk2.setIdBus(bus.getId());
+		pk2.setFechaInicio(new Date(119, 10, 20));
+		pk2.setFechaFin(new Date(119,10,31));
+		pk2.setCedulaConductor(cond.getCedula());
+		pk2.setIdRuta(ruta2.getId());
+		
+		Tmio1Servicio s2= new Tmio1Servicio();
+		s2.setTmio1Bus(bus1);
+		s2.setId(pk2);
+		s2.setTmio1Conductore(cond);
+		s2.setTmio1Ruta(ruta2);
+		
+		ArrayList<Tmio1Servicio> ser= new ArrayList<>();
+		ser.add(s1);
+		ser.add(s2);
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		when( rest.exchange(REST_URI + "/servicios/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>>(new TransactionBody<>("ajajjaja" ,ser) , HttpStatus.ACCEPTED));
+	
+		ArrayList<Tmio1Servicio> servicios = (ArrayList<Tmio1Servicio>) delegado.getServicios();
+		assertTrue(servicios.size() == 2);
+		assertTrue(servicios.get(0).getTmio1Bus().getPlaca().equals("123"));
+		assertTrue(servicios.get(1).getTmio1Bus().getPlaca().equals("124"));
+	}
+	
+	@Test
+	public void saveServicioTest() {
+		Tmio1ServicioWrapper w= new Tmio1ServicioWrapper();
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		HttpEntity request = new HttpEntity(transaction);
+		w.setCedulaConductor("123");
+		w.setFechaFin(new java.sql.Date(119, 1,1));
+		w.setFechaInicio(new Date(118,1,1));
+		w.setIdBus("123");
+		w.setRutaId("1");
+		when(rest.exchange(REST_URI + "/servicios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Servicio>>(new TransactionBody<>(), HttpStatus.ACCEPTED));
+		try {
+			delegado.saveServicio(w);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void updateServicioTest() {
+		Tmio1ServicioWrapper w= new Tmio1ServicioWrapper();
+		w.setCedulaConductor("124");
+		w.setFechaFin(new java.sql.Date(119, 1,1));
+		w.setFechaInicio(new Date(118,1,1));
+		w.setIdBus("123");
+		w.setRutaId("1");
+		w.setCedulaConductorViejo("123");
+		w.setFechaFinViejo(new java.sql.Date(119, 1,1));
+		w.setFechaInicioViejo(new Date(118,1,1));
+		w.setIdBusViejo("123");
+		w.setRutaIdViejo("1");
+		
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		HttpEntity request = new HttpEntity(transaction);
+		when(rest.exchange(REST_URI + "/servicios/", HttpMethod.PUT, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Servicio>>(new TransactionBody<>(), HttpStatus.ACCEPTED));
+		
+		try {
+			delegado.updateServicio(w);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void findServicioByDate() {
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		
+		Tmio1Bus bus1 = new Tmio1Bus();
+		bus1.setCapacidad(new BigDecimal("12"));
+		bus1.setMarca("che");
+		bus1.setModelo(new BigDecimal("123"));
+		bus1.setTipo("A");	
+		bus1.setPlaca("124");
+		
+		Tmio1Ruta ruta= new Tmio1Ruta();
+		ruta.setActiva("a");
+		ruta.setDescripcion("a");
+		ruta.setDiaFin(new BigDecimal(6));
+		ruta.setDiaInicio(new BigDecimal(1));
+		ruta.setHoraFin(new BigDecimal("2"));
+		ruta.setHoraInicio(new BigDecimal("1"));
+		ruta.setNumero("1");
+		
+		Tmio1Ruta ruta2= new Tmio1Ruta();
+		ruta2.setActiva("a");
+		ruta2.setDescripcion("b");
+		ruta2.setDiaFin(new BigDecimal(6));
+		ruta2.setDiaInicio(new BigDecimal(1));
+		ruta2.setHoraFin(new BigDecimal("2"));
+		ruta2.setHoraInicio(new BigDecimal("1"));
+		ruta2.setNumero("1");
+		
+		Tmio1Conductore cond = new Tmio1Conductore();
+		cond.setApellidos("ma");
+		cond.setCedula("123");
+		cond.setFechaContratacion(new Date(100, 10, 17));
+		cond.setFechaNacimiento(new Date(99, 1, 1));
+		cond.setNombre("se");
+		
+		Tmio1ServicioPK pk1= new Tmio1ServicioPK();
+		pk1.setIdBus(bus.getId());
+		pk1.setFechaInicio(new Date(119, 10, 25));
+		pk1.setFechaFin(new Date(119,10,31));
+		pk1.setCedulaConductor(cond.getCedula());
+		pk1.setIdRuta(ruta.getId());
+		
+		Tmio1Servicio s1= new Tmio1Servicio();
+		s1.setTmio1Bus(bus);
+		s1.setId(pk1);
+		s1.setTmio1Conductore(cond);
+		s1.setTmio1Ruta(ruta);
+		
+		Tmio1ServicioPK pk2= new Tmio1ServicioPK();
+		pk2.setIdBus(bus.getId());
+		pk2.setFechaInicio(new Date(119, 10, 20));
+		pk2.setFechaFin(new Date(119,10,31));
+		pk2.setCedulaConductor(cond.getCedula());
+		pk2.setIdRuta(ruta2.getId());
+		
+		Tmio1Servicio s2= new Tmio1Servicio();
+		s2.setTmio1Bus(bus1);
+		s2.setId(pk2);
+		s2.setTmio1Conductore(cond);
+		s2.setTmio1Ruta(ruta2);
+		ArrayList<Tmio1Servicio> ser= new ArrayList<>();
+		ser.add(s2);
+		Date fecha = new Date(119,10,20);
+		
+		when( rest.exchange(REST_URI + "/buses/search/find?fecha="+fecha, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>>(new TransactionBody<>("ejje",ser), HttpStatus.ACCEPTED));
+		
+		ArrayList<Tmio1Servicio> con= (ArrayList<Tmio1Servicio>) delegado.findServicioByDate(fecha);
+		assertTrue(con.get(0)==s2);
+	
 	}
 
 }
