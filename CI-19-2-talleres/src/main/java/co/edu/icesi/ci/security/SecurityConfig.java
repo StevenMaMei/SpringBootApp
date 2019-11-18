@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-		httpSecurity
+		httpSecurity.csrf().disable()
 		.authorizeRequests().antMatchers("/buses/add/**").hasAnyRole(Tmio1User.ROL_ADMINISTRADOR.toString())
 		.and().authorizeRequests().antMatchers("/conductores/add/**").hasAnyRole(Tmio1User.ROL_ADMINISTRADOR.toString())
 		.and().authorizeRequests().antMatchers("/rutas/add/**").hasAnyRole(Tmio1User.ROL_ADMINISTRADOR.toString())
@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.formLogin().loginPage("/login").permitAll().and()
 		.authorizeRequests().antMatchers("/**").authenticated()
 		.and()
-//		.authorizeRequests().antMatchers("/**").permitAll().and()
+		.authorizeRequests().antMatchers("/**").permitAll().and()
 		.logout().invalidateHttpSession(true).clearAuthentication(true)
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
 	}

@@ -25,7 +25,7 @@ public class Delegate {
 	public final static String REST_URI = "http://localhost:8080/api";
 
 	private RestTemplate restTemplate = new RestTemplate();
-
+	String token = "steven:123";
 	public ArrayList<Tmio1Bus> getBuses() {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
