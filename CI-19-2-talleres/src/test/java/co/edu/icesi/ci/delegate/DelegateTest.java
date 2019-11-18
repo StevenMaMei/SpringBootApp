@@ -2,6 +2,7 @@ package co.edu.icesi.ci.delegate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -78,6 +79,46 @@ public class DelegateTest {
 		assertTrue(res.size()==2);
 		assertEquals(res.get(0), bus1);
 		assertEquals(res.get(1), bus);
+	}
+	
+	@Test
+	public void saveBusTest() {
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Bus> transaction= new TransactionBody<>("apiContext",bus);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Bus>> response = null;
+		when(rest.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){})).thenReturn(new ResponseEntity<TransactionBody<Tmio1Bus>>(new TransactionBody<>(),HttpStatus.ACCEPTED));
+		try {
+			delegado.saveBus(bus);
+		}catch(Exception e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void buscarBusTest() {
+		Tmio1Bus bus = new Tmio1Bus();
+		bus.setCapacidad(new BigDecimal("12"));
+		bus.setMarca("che");
+		bus.setModelo(new BigDecimal("123"));
+		bus.setTipo("A");	
+		bus.setPlaca("123");
+		ArrayList<Tmio1Bus> buses = new ArrayList<>();
+		buses.add(bus);
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		when(rest.exchange(REST_URI + "/buses/search/findByPlaca?placa=123", HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){})).thenReturn(new ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>>(new TransactionBody<>("a",buses),HttpStatus.ACCEPTED));
+		
+		ArrayList<Tmio1Bus> buss = (ArrayList<Tmio1Bus>) delegado.buscarBus("123");
+		assertTrue(buss.size()==1);
+		assertTrue(buss.get(0).getPlaca().equals("123"));
+		
 	}
 
 }
