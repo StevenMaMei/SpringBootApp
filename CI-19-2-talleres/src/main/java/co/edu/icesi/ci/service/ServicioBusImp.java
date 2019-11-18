@@ -59,14 +59,14 @@ public class ServicioBusImp implements ServicioBus {
 
 	@Override
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public Iterable<Tmio1Bus> findAll() {
+	public ArrayList<Tmio1Bus> findAll() {
 		
 		return repositorio.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public Iterable<Tmio1Bus> consultarBus(String placa) throws Exception {
+	public ArrayList<Tmio1Bus> consultarBus(String placa) throws Exception {
 		Tmio1Bus bus= repositorio.findByPlaca(placa);
 		if(bus != null) {
 			ArrayList<Tmio1Bus> lista= new ArrayList<>();

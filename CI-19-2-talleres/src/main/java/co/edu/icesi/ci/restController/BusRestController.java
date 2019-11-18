@@ -1,5 +1,7 @@
 package co.edu.icesi.ci.restController;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.icesi.ci.delegate.TransactionBody;
 import co.edu.icesi.ci.service.ServicioBus;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 
@@ -17,8 +20,8 @@ public class BusRestController {
 	private ServicioBus servicio;
 	
 	@GetMapping("/api/buses/")
-	public Iterable<Tmio1Bus> indexBuses() {
-		return servicio.findAll();
+	public TransactionBody<ArrayList<Tmio1Bus>> indexBuses() {
+		return new TransactionBody<>("buses",servicio.findAll());
 	}
 	
 	@PostMapping("/api/buses/")
@@ -27,7 +30,7 @@ public class BusRestController {
 	}
 	
 	@GetMapping("/api/buses/search/findByPlaca")
-	public Iterable<Tmio1Bus> findByPlaca(@Param("placa") String placa) throws Exception {
+	public ArrayList<Tmio1Bus> findByPlaca(@Param("placa") String placa) throws Exception {
 		return servicio.consultarBus(placa);
 	}
 

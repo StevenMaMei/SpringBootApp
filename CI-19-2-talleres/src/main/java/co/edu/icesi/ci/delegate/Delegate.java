@@ -1,5 +1,6 @@
 package co.edu.icesi.ci.delegate;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,12 @@ public class Delegate {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	public Iterable<Tmio1Bus> getBuses() {
+	public ArrayList<Tmio1Bus> getBuses() {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
-		ResponseEntity<TransactionBody<Iterable<Tmio1Bus>>> response = null;
+		ResponseEntity<TransactionBody<ArrayList<Tmio1Bus>>> response = null;
 		try {
-			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Bus>>>(){});
+			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<ArrayList<Tmio1Bus>>>(){});
 			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
