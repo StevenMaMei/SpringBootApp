@@ -18,6 +18,7 @@ import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 import co.edu.icesi.ci.talleres.model.Tmio1Servicio;
 import co.edu.icesi.ci.talleres.model.Tmio1ServicioWrapper;
+import co.edu.icesi.ci.talleres.model.Tmio1Sitio;
 
 @Component
 public class Delegate {
@@ -25,7 +26,44 @@ public class Delegate {
 	public final static String REST_URI = "http://localhost:8080/api";
 
 	private RestTemplate restTemplate = new RestTemplate();
-	String token = "steven:123";
+
+	public ArrayList<Tmio1Sitio> getSitios(){
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<ArrayList<Tmio1Sitio>>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios/", HttpMethod.GET, request, new ParameterizedTypeReference<TransactionBody<ArrayList<Tmio1Sitio>>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		return response.getBody().getBody();
+	}
+	public void saveSitio(Tmio1Sitio sitio) {
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Sitio> transaction= new TransactionBody<>("apiContext",sitio);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Sitio>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Sitio>>(){});			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+	}
+	public void updateSitio(Tmio1Sitio sitio) {
+		HttpHeaders headerAct = new HttpHeaders();
+		TransactionBody<Tmio1Sitio> transaction= new TransactionBody<>("apiContext",sitio);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Sitio>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios/", HttpMethod.PUT, request, new ParameterizedTypeReference<TransactionBody<Tmio1Sitio>>(){});			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+	}
 	public ArrayList<Tmio1Bus> getBuses() {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
@@ -38,6 +76,36 @@ public class Delegate {
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
 		return response.getBody().getBody();
+	}
+	
+	public void deleteSitio(long id) {
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<Tmio1Sitio>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios?id="+id, HttpMethod.DELETE, request,  new ParameterizedTypeReference<TransactionBody<Tmio1Sitio>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		
+	}
+	
+	public ArrayList<Tmio1Sitio> findSitio(long id) {
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(headerAct);
+		ResponseEntity<TransactionBody<Tmio1Sitio>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios/find?id="+id, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Tmio1Sitio>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		ArrayList<Tmio1Sitio> s= new ArrayList<>();
+		s.add(response.getBody().getBody());
+		return s;
 	}
 	
 	public void saveBus(Tmio1Bus bus) {

@@ -36,9 +36,15 @@ public class Tmio1SitioDaoImp implements Tmio1SitioDao {
 	public Tmio1Sitio findById(long id) {
 		String jpql= "Select b"
 				+ " from Tmio1Sitio b "
-				+ "where b.id ="+"'"+id+"'";
-		
-		List<Tmio1Sitio> consulta = entityManager.createQuery(jpql).getResultList();
+				+ "where b.id = :idd ";
+		List<Tmio1Sitio> consulta = new ArrayList<Tmio1Sitio>();
+		try {
+			consulta.add(entityManager.find(Tmio1Sitio.class, id));
+			
+			
+		}catch(Exception e) {
+			
+		}
 		if(consulta.size()==0) {
 			return null;
 		}else {

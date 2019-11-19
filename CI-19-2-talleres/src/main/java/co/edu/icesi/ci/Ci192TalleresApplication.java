@@ -11,9 +11,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import co.edu.icesi.ci.service.ServicioBus;
 import co.edu.icesi.ci.service.ServicioConductor;
 import co.edu.icesi.ci.service.ServicioRuta;
+import co.edu.icesi.ci.service.ServicioSitio;
 import co.edu.icesi.ci.talleres.model.Tmio1Bus;
 import co.edu.icesi.ci.talleres.model.Tmio1Conductore;
 import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
+import co.edu.icesi.ci.talleres.model.Tmio1Sitio;
 import co.edu.icesi.ci.talleres.model.Tmio1User;
 import co.edu.icesi.ci.talleres.repositories.BusesRepository;
 import co.edu.icesi.ci.talleres.repositories.ConductoresRepository;
@@ -34,6 +36,17 @@ public class Ci192TalleresApplication {
 		ServicioBus reposB= context.getBean(ServicioBus.class);
 		ServicioConductor reposC = context.getBean(ServicioConductor.class);
 		ServicioRuta reposR= context.getBean(ServicioRuta.class);
+		ServicioSitio reposS= context.getBean(ServicioSitio.class);
+		
+		Tmio1Sitio sit= new Tmio1Sitio();
+		sit.setDescripcion("hola");
+		sit.setNombre("cañas");
+		try {
+			reposS.guardarSitio(sit);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Tmio1User user1 = new Tmio1User();
 		user1.setUsername("laura");
 		user1.setPassword("{noop}456");
