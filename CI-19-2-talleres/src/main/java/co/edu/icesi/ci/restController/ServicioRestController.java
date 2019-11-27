@@ -41,36 +41,52 @@ public class ServicioRestController {
 	}
 
 	@PostMapping("/api/servicios/")
-	public void saveServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
+	public TransactionBody<Object> saveServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper){
 		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
-		servicioServicio.guardarServicio(Integer.parseInt(t.getIdBus()), t.getCedulaConductor(), Integer.parseInt(t.getRutaId()), t.getFechaInicio(), t.getFechaFin());	
+		try {
+			servicioServicio.guardarServicio(Integer.parseInt(t.getIdBus()), t.getCedulaConductor(), Integer.parseInt(t.getRutaId()), t.getFechaInicio(), t.getFechaFin());
+		} catch (NumberFormatException e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		} catch (Exception e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		}	
+		return new TransactionBody<>("null",null);
+		
 	}
 
 	@PutMapping("/api/servicios/")
-	public void updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
+	public TransactionBody<Object> updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper){
 		Tmio1Servicio ser= new Tmio1Servicio();
 		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
 
-		Tmio1Servicio s= servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
-		if(s!= null) {
-
-			
-			ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(t.getIdBus())));
-			ser.setTmio1Conductore(servicioConductor.consultarConductor(t.getCedulaConductor()));
-			ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(t.getRutaId())));
-
-			Tmio1ServicioPK pk = new Tmio1ServicioPK();
-			pk.setCedulaConductor(t.getCedulaConductor());
-			pk.setFechaFin(t.getFechaFin());
-			pk.setFechaInicio(t.getFechaInicio());
-			pk.setIdBus(Integer.parseInt(t.getIdBus()));
-			pk.setIdRuta(Integer.parseInt(t.getRutaId()));
-
-			ser.setId(pk);
-
-			servicioServicio.actualizarServicio(ser);
-			servicioServicio.removerServicio(s);
+		Tmio1Servicio s;
+		try {
+			s = servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
+			if(s!= null) {
+				
+				
+				ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(t.getIdBus())));
+				ser.setTmio1Conductore(servicioConductor.consultarConductor(t.getCedulaConductor()));
+				ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(t.getRutaId())));
+				
+				Tmio1ServicioPK pk = new Tmio1ServicioPK();
+				pk.setCedulaConductor(t.getCedulaConductor());
+				pk.setFechaFin(t.getFechaFin());
+				pk.setFechaInicio(t.getFechaInicio());
+				pk.setIdBus(Integer.parseInt(t.getIdBus()));
+				pk.setIdRuta(Integer.parseInt(t.getRutaId()));
+				
+				ser.setId(pk);
+				
+				servicioServicio.actualizarServicio(ser);
+				servicioServicio.removerServicio(s);
+			}
+		} catch (NumberFormatException e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		} catch (Exception e) {
+			return new TransactionBody<>("exception",e.getMessage());
 		}
+		return new TransactionBody<>("null",null);
 	}
 	
 	@GetMapping("/api/servicios/find")

@@ -2,6 +2,9 @@ package co.edu.icesi.ci.talleres.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -30,10 +33,12 @@ public class Tmio1Sitio implements Serializable {
 
 	//bi-directional many-to-one association to Tmio1SitiosRuta
 	@OneToMany(mappedBy="tmio1Sitio1")
+	@JsonIgnore
 	private List<Tmio1SitiosRuta> tmio1SitiosRutas1;
 
 	//bi-directional many-to-one association to Tmio1SitiosRuta
 	@OneToMany(mappedBy="tmio1Sitio2")
+	@JsonIgnore
 	private List<Tmio1SitiosRuta> tmio1SitiosRutas2;
 
 	public Tmio1Sitio() {

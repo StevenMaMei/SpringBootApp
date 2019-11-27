@@ -25,8 +25,14 @@ public class BusRestController {
 	}
 	
 	@PostMapping("/api/buses/")
-	public void saveBus(@RequestBody TransactionBody<Tmio1Bus> bus) throws Exception {
-		servicio.guardarBus(bus.getBody());
+	public TransactionBody<Object> saveBus(@RequestBody TransactionBody<Tmio1Bus> bus) {
+		
+		try {
+			servicio.guardarBus(bus.getBody());
+		} catch (Exception e) {
+			return new TransactionBody<Object>("exception", e.getMessage());
+		}
+		return new TransactionBody<Object>("null", null) ;
 	}
 	
 	@GetMapping("/api/buses/search/findByPlaca")

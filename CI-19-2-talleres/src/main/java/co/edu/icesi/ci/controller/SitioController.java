@@ -41,7 +41,7 @@ public class SitioController {
 	}
 	
 	@PostMapping("/sitios/edit")
-	public String updateTmio1Bus(@Valid Tmio1Sitio tmio1Sitio, BindingResult bindingResult,
+	public String updateTmio1Sitio(@Valid Tmio1Sitio tmio1Sitio, BindingResult bindingResult,
 			@RequestParam(value = "action", required = true) String action, Model model) {
 		if (!action.equals("Cancel")) {			
 			if (bindingResult.hasErrors()) {	
@@ -94,7 +94,7 @@ public class SitioController {
 	public String eliminar(Model model,@PathVariable("id")long id ) {
 		try {
 			delegate.deleteSitio(id);
-			model.addAttribute("sitios",delegate.findSitio(id));
+			model.addAttribute("sitios",delegate.getSitios());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

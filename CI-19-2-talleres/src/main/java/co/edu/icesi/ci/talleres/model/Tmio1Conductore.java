@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -44,10 +46,12 @@ public class Tmio1Conductore implements Serializable {
 
 	//bi-directional many-to-one association to Tmio1Servicio
 	@OneToMany(mappedBy="tmio1Conductore")
+	@JsonIgnore
 	private List<Tmio1Servicio> tmio1Servicios;
 
 	//bi-directional many-to-one association to Tmio1ServiciosSitio
 	@OneToMany(mappedBy="tmio1Conductore")
+	@JsonIgnore
 	private List<Tmio1ServiciosSitio> tmio1ServiciosSitios;
 
 	public Tmio1Conductore() {
