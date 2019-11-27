@@ -16,8 +16,8 @@ import co.edu.icesi.ci.talleres.model.Tmio1Ruta;
 
 @Controller
 public class RutaController {
-	@Autowired
-	private ServicioRuta servicio;
+//	@Autowired
+//	private ServicioRuta servicio;
 	@Autowired
 	private Delegate delegate;
 	@GetMapping("/rutas/")
