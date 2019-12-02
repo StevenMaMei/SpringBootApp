@@ -100,6 +100,7 @@ public class ServicioController {
 	public String editService(Model model, @PathVariable("id") Integer id, @PathVariable("ced") String ced, @PathVariable("idR") Integer idR, @PathVariable("fi") long fi, @PathVariable("ff") long ff) {
 		Tmio1ServicioWrapper w = new Tmio1ServicioWrapper();
 		try {
+			// TODO Desasociar este controlador de servicios.
 			Tmio1Servicio s= servicioServicio.consultarServicio(id, ced, idR, new Date(fi), new Date(ff));
 			if(s!= null) {
 				Tmio1Servicio ser= s;

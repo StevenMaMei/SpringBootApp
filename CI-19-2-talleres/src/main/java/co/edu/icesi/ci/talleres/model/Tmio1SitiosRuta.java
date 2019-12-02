@@ -16,6 +16,19 @@ public class Tmio1SitiosRuta implements Serializable {
 
 	@EmbeddedId
 	private Tmio1SitiosRutaPK id;
+	
+//	@Id
+//	@SequenceGenerator(name="TMIO1_SITIOSRUTAS_ID_GENERATOR", sequenceName="TMIO1_SITIOSRUTAS_SEQ")
+//	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TMIO1_SITIOSRUTAS_ID_GENERATOR")
+//	private Integer idd;
+	
+//	public Integer getIdd() {
+//		return idd;
+//	}
+//	
+//	public void setIdd(Integer idd) {
+//		this.idd = idd;
+//	}
 
 	//bi-directional many-to-one association to Tmio1Ruta
 	@ManyToOne
@@ -39,6 +52,7 @@ public class Tmio1SitiosRuta implements Serializable {
 
 	public Tmio1SitiosRuta() {
 	}
+	
 
 	public Tmio1SitiosRutaPK getId() {
 		return this.id;

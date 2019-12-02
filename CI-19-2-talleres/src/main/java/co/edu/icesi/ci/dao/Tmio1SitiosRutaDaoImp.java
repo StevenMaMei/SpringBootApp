@@ -23,23 +23,28 @@ public class Tmio1SitiosRutaDaoImp implements Tmio1SitiosRutaDao{
 
 	@Override
 	public void update(Tmio1SitiosRuta entity) {
-		entityManager.persist(entity);
+		entityManager.merge(entity);
 	}
 
 	@Override
 	public void delete(Tmio1SitiosRuta entity) {
-		entityManager.merge(entity);
+		entityManager.remove(entity);
 	}
 
 	@Override
 	public Tmio1SitiosRuta findById(Tmio1SitiosRutaPK id) {
 		return entityManager.find(Tmio1SitiosRuta.class, id);
 	}
+	
+//	@Override
+//	public Tmio1SitiosRuta findById(Integer id) {
+//		return entityManager.find(Tmio1SitiosRuta.class, id);
+//	}
 
 	@Override
 	public ArrayList<Tmio1SitiosRuta> findAll() {
 		String jpql = "Select r From Tmio1SitiosRuta r";
-		return (ArrayList) entityManager.createQuery(jpql).getResultList();
+		return (ArrayList<Tmio1SitiosRuta>) entityManager.createQuery(jpql).getResultList();
 	}
 
 }

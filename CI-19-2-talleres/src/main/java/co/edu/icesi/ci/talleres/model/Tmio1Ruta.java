@@ -5,6 +5,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -52,10 +54,12 @@ public class Tmio1Ruta implements Serializable {
 
 	//bi-directional many-to-one association to Tmio1SitiosRuta
 	@OneToMany(mappedBy="tmio1Ruta1")
+	@JsonIgnore
 	private List<Tmio1SitiosRuta> tmio1SitiosRutas1;
 
 	//bi-directional many-to-one association to Tmio1SitiosRuta
 	@OneToMany(mappedBy="tmio1Ruta2")
+	@JsonIgnore
 	private List<Tmio1SitiosRuta> tmio1SitiosRutas2;
 
 	public Tmio1Ruta() {

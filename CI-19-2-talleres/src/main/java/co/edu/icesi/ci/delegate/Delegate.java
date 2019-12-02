@@ -3,7 +3,6 @@ package co.edu.icesi.ci.delegate;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +20,7 @@ import co.edu.icesi.ci.talleres.model.Tmio1ServicioWrapper;
 import co.edu.icesi.ci.talleres.model.Tmio1Sitio;
 import co.edu.icesi.ci.talleres.model.Tmio1SitiosRuta;
 import co.edu.icesi.ci.talleres.model.Tmio1SitiosRutaPK;
+import co.edu.icesi.ci.talleres.model.Tmio1SitiosRutaWrapper;
 
 @Component
 public class Delegate {
@@ -276,29 +276,28 @@ public class Delegate {
 	public ArrayList<Tmio1SitiosRuta> getSitiosRutas(){
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
-		ResponseEntity<TransactionBody<Iterable<Tmio1SitiosRuta>>> response = null;
+		ResponseEntity<TransactionBody<ArrayList<Tmio1SitiosRuta>>> response = null;
 		try {
 			response = restTemplate.exchange(REST_URI + "/sitios-rutas", HttpMethod.GET, request,
-					new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1SitiosRuta>>>() {
+					new ParameterizedTypeReference<TransactionBody<ArrayList<Tmio1SitiosRuta>>>() {
 			});
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
-		return (ArrayList<Tmio1SitiosRuta>) response.getBody().getBody();
+		return response.getBody().getBody();
 	}
 	
-	public void saveSitioRuta(Tmio1SitiosRutaPK pk) {
+	public void saveSitioRuta(Tmio1SitiosRutaWrapper wrapper) {
 		HttpHeaders headerAct = new HttpHeaders();
 		
-		TransactionBody<Tmio1SitiosRutaPK> transaction = new TransactionBody<>("apiContext", pk);
+		TransactionBody<Tmio1SitiosRutaWrapper> transaction = new TransactionBody<>("apiContext", wrapper);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1SitiosRutaPK>> response = null;
+		ResponseEntity<TransactionBody<Tmio1SitiosRutaWrapper>> response = null;
 		try {
 			response = restTemplate.exchange(REST_URI + "/sitios-rutas", HttpMethod.POST, request,
-					new ParameterizedTypeReference<TransactionBody<Tmio1SitiosRutaPK>>() {
+					new ParameterizedTypeReference<TransactionBody<Tmio1SitiosRutaWrapper>>() {
 			});
-			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
@@ -318,6 +317,38 @@ public class Delegate {
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
 		return response.getBody().getBody();
+	}
+	
+	public void editSitiosRuta(Tmio1SitiosRutaWrapper wrapper) {
+		HttpHeaders headerAct = new HttpHeaders();
+		
+		TransactionBody<Tmio1SitiosRutaWrapper> transaction = new TransactionBody<>("apiContext", wrapper);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1SitiosRutaWrapper>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios-rutas", HttpMethod.PUT, request,
+					new ParameterizedTypeReference<TransactionBody<Tmio1SitiosRutaWrapper>>() {
+			});
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+	}
+	
+	public void deleteSitiosRuta(Tmio1SitiosRutaWrapper wrapper) {
+		HttpHeaders headerAct = new HttpHeaders();
+		
+		TransactionBody<Tmio1SitiosRutaWrapper> transaction = new TransactionBody<>("apiContext", wrapper);
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1SitiosRutaWrapper>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/sitios-rutas", HttpMethod.DELETE, request,
+					new ParameterizedTypeReference<TransactionBody<Tmio1SitiosRutaWrapper>>() {
+			});
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
 	}
 	
 	

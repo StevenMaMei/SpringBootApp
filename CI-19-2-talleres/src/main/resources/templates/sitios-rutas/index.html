@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sitios</title>
+<title>Sitios-Rutas</title>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,29 +23,34 @@
 			</a> <a href="/sitios-rutas/"><i class="fas fa-home ml-2"></i> Go back </a>
 		</div>
 		<div th:case="*">
-			<form action="#" th:action="@{/sitios/buscar/}" method="get">
+			<form action="#" th:action="@{/sitios-rutas/buscar/}" method="get">
 				<input type="hidden" placeholder="id" name="id">
 			</form>
 			<table class="table table-striped table-responsive-md">
 				<thead>
 					<tr>
+<!-- 						<th>Id</th> -->
 						<th>Id del Sitio</th>
-						<th>Descripción</th>
-						<th>Nombre</th>
-
+						<th>Sitio</th>
+						<th>Id de la Ruta</th>
+						<th>Descripcion de la Ruta</th>
+						<th>Edit</th>
+						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="tmio1SitiosRuta:${sitiosrutas}">
-						<td class="text-info" th:text="${tmio1SitiosRuta.tmio1Sitio1.id}"></td>
-						<td class="text-info" th:text="${tmio1SitiosRuta.tmio1Sitio1.nombre}"></td>
-						<td class="text-info" th:text="${tmio1SitiosRuta.tmio1Ruta1.id}"></td>
-						<td class="text-info" th:text="${tmio1SitiosRuta.tmio1Ruta1().descripcion}"></td>
+					<tr th:each="sr : ${sitiosrutas}">
+<!-- 						<td class="text-info" th:text="${sr.shit}"></td> -->
+						<td class="text-info" th:text="${sr.id.idSitio}"></td>
+						<td class="text-info" th:text="${sr.tmio1Sitio1.nombre}"></td>
+						<td class="text-info" th:text="${sr.id.idRuta}"></td>
+						<td class="text-info" th:text="${sr.tmio1Ruta1.descripcion}"></td>
+
 						<td><a
-							th:href="@{/sitios-rutas/edit/{hash}(hash=${tmio1SitiosRuta.id.hashCode()})}"
+							th:href="@{/sitios-rutas/edit/{sitio}/{ruta}(sitio=${sr.id.idSitio},ruta=${sr.id.idRuta})}"
 							class="btn btn-primary"><i class="fas fa-calendar ml-2"></i></a></td>
 						<td><a
-							th:href="@{/sitios-rutas/borrar/{hash}(hash=${tmio1SitiosRuta.id.hashCode()})}"
+							th:href="@{/sitios-rutas/delete/{sitio}/{ruta}(sitio=${sr.id.idSitio},ruta=${sr.id.idRuta})}"
 							class="btn btn-primary"><i class="fas fa-trash"></i></a></td>
 					</tr>
 					</tr>

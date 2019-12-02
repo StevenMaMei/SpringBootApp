@@ -23,9 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.and().authorizeRequests().antMatchers("/rutas/add/**").hasAnyRole(Tmio1User.ROL_ADMINISTRADOR.toString())
 		.and()
 		.formLogin().loginPage("/login").permitAll().and()
+		.authorizeRequests().antMatchers("/api/**").permitAll()
+		.and()
 		.authorizeRequests().antMatchers("/**").authenticated()
 		.and()
-		.authorizeRequests().antMatchers("/**").permitAll().and()
 		.logout().invalidateHttpSession(true).clearAuthentication(true)
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
 	}

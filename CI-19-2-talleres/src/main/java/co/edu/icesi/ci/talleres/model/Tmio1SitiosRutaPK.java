@@ -13,17 +13,17 @@ public class Tmio1SitiosRutaPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="id_sitio", insertable=false, updatable=false)
-	private Integer idSitio;
+	private Long idSitio;
 
 	@Column(name="id_ruta", insertable=false, updatable=false)
 	private Integer idRuta;
 
 	public Tmio1SitiosRutaPK() {
 	}
-	public Integer getIdSitio() {
+	public long getIdSitio() {
 		return this.idSitio;
 	}
-	public void setIdSitio(Integer idSitio) {
+	public void setIdSitio(long idSitio) {
 		this.idSitio = idSitio;
 	}
 	public Integer getIdRuta() {
