@@ -58,7 +58,7 @@ public class ServicioRestController {
 	public TransactionBody<Object> updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper){
 		Tmio1Servicio ser= new Tmio1Servicio();
 		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
-
+		
 		Tmio1Servicio s;
 		try {
 			s = servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
@@ -88,8 +88,12 @@ public class ServicioRestController {
 		}
 		return new TransactionBody<>("null",null);
 	}
-	
-	@GetMapping("/api/servicios/find")
+	@GetMapping("/api/servicios/findById/")
+	public TransactionBody<Tmio1Servicio> consultarServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> wrapper) throws Exception{
+		Tmio1ServicioWrapper w = wrapper.getBody();
+		return new TransactionBody<Tmio1Servicio>("servicio", servicioServicio.consultarServicio(Integer.parseInt(w.getIdBus()), w.getCedulaConductor(), Integer.parseInt(w.getRutaId()), w.getFechaInicio(), w.getFechaFin()));
+	}
+	@GetMapping("/api/servicios/find/")
 	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") Date fecha) {
 		return new TransactionBody<>("servicios",servicioServicio.findByDate(fecha));
 	}

@@ -124,7 +124,21 @@ public class Delegate {
 		}
 		
 	}
-	
+	public Tmio1Servicio findServicio(Tmio1ServicioWrapper w ) {
+		TransactionBody<Tmio1ServicioWrapper> transaction = new TransactionBody<Tmio1ServicioWrapper>("apicontext", w);
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
+		try {
+			response = restTemplate.exchange(REST_URI + "/servicios/findById/", HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
+			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		
+		return response.getBody().getBody();
+	}
 	public Iterable<Tmio1Bus> buscarBus(String placa) {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
@@ -174,7 +188,7 @@ public class Delegate {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/buses/search/find?fecha="+fecha, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
+		response = restTemplate.exchange(REST_URI + "/servicios/find?fecha="+fecha, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
 		return response.getBody().getBody();
 	}
 	public Iterable<Tmio1Conductore> getConductores() {
