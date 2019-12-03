@@ -76,11 +76,22 @@ public class ServicioSitiosRutaImp implements ServicioSitiosRuta {
 		
 	}
 
+//	@Override
+//	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+//	public Tmio1SitiosRuta eliminarSitioRuta(Tmio1SitiosRuta sitioRuta) throws Exception {
+//		repos.delete(sitioRuta);
+//		return sitioRuta;
+//	}
+	
 	@Override
 	@Transactional(readOnly=false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public Tmio1SitiosRuta eliminarSitioRuta(Tmio1SitiosRuta sitioRuta) throws Exception {
-		repos.delete(sitioRuta);
-		return sitioRuta;
+	public Tmio1SitiosRuta eliminarSitioRuta(Tmio1SitiosRutaWrapper wrapper) throws Exception {
+		Tmio1SitiosRutaPK id = new Tmio1SitiosRutaPK();
+		id.setIdSitio(wrapper.getIdSitio());
+		id.setIdRuta(wrapper.getIdRuta());
+		Tmio1SitiosRuta sr = repos.findById(id);
+		repos.delete(sr);
+		return sr;
 	}
 
 	@Override
@@ -89,21 +100,40 @@ public class ServicioSitiosRutaImp implements ServicioSitiosRuta {
 		Tmio1SitiosRutaPK id = new Tmio1SitiosRutaPK();
 		id.setIdSitio(wrapper.getIdSitioViejo());
 		id.setIdRuta(wrapper.getIdRutaViejo());
+		Tmio1SitiosRuta r = repos.findById(id);
+		System.out.println("Sitio Viejo: " +wrapper.getIdSitioViejo()+ " / Ruta Vieja: " + wrapper.getIdRutaViejo());
+		System.out.println("Sitio: " +wrapper.getIdSitio()+ " / Ruta: " + wrapper.getIdRuta());
 		
+		
+		if(r==null) {
+			System.out.println("NO SE ENCONTRO EL VIEJO PARA BORRAR");
+		}
+		
+		
+		
+		
+		Tmio1SitiosRutaPK nId = new Tmio1SitiosRutaPK();
+		nId.setIdSitio(wrapper.getIdSitio());
+		nId.setIdRuta(wrapper.getIdRuta());
+
 //		Tmio1SitiosRutaPK id = new Tmio1SitiosRutaPK();
 //		id.setIdSitio(wrapper.getIdSitioViejo());
 //		id.setIdRuta(wrapper.getIdRutaViejo());
 		
+		System.out.println("Id que voy a borrar: " + r.getTmio1Ruta1().getId());
+		Tmio1SitiosRuta s = new Tmio1SitiosRuta();
+		s.setId(nId);
+		s.setTmio1Sitio1(repoSitios.findById(nId.getIdSitio()));
+		s.setTmio1Ruta1(repoRutas.findById(nId.getIdRuta()));
+		repos.delete(r);
+		repos.save(s);
 		
-		//TODO FIX THIS
-		Tmio1SitiosRuta r = repos.findById(id);
-		
-		r.setTmio1Sitio1(repoSitios.findById(wrapper.getIdSitio()));
-		r.setTmio1Ruta1(repoRutas.findById(wrapper.getIdRuta()));
-		Tmio1SitiosRutaPK idd = new Tmio1SitiosRutaPK();
-		idd.setIdSitio(wrapper.getIdSitio());
-		idd.setIdRuta(wrapper.getIdRuta());
-		r.setId(idd);
+//		r.setTmio1Sitio1(repoSitios.findById(wrapper.getIdSitio()));
+//		r.setTmio1Ruta1(repoRutas.findById(wrapper.getIdRuta()));
+//		Tmio1SitiosRutaPK idd = new Tmio1SitiosRutaPK();
+//		idd.setIdSitio(wrapper.getIdSitio());
+//		idd.setIdRuta(wrapper.getIdRuta());
+//		r.setId(idd);
 		
 	}
 

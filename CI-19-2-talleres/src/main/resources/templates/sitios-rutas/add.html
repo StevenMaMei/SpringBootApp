@@ -24,15 +24,6 @@
 				<form action="#" th:action="@{/sitios-rutas/add/}"
 					th:object="${tmio1SitiosRutaWrapper}" method="post">
 					<div class="row">
-						<div class="form-group col-md-6">
-						<label for="idRuta" class="col-form-label">Ruta (Id)</label> <br><select
-								th:field="*{idRuta}">
-								<option th:each="ruta : ${rutas}" th:value="${ruta.id}"
-									class="form-control" th:text="${ruta.id}"
-									th:selected="${tmio1SitiosRutaWrapper.idRuta=ruta}"></option>
-							</select> <span th:if="${#fields.hasErrors('idRuta')}"
-								th:errors="*{idRuta}" class="text-danger"></span>
-						</div>
 						
 						
 						<div class="form-group col-md-6">
@@ -43,6 +34,15 @@
 									th:selected="${tmio1SitiosRutaWrapper.idSitio=sitio.id}"></option>
 							</select> <span th:if="${#fields.hasErrors('idSitio')}"
 								th:errors="*{idSitio}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+						<label for="idRuta" class="col-form-label">Ruta (Id)</label> <br><select
+								th:field="*{idRuta}">
+								<option th:each="ruta : ${rutas}" th:value="${ruta.id}"
+									class="form-control" th:text="${ruta.id}"
+									th:selected="${tmio1SitiosRutaWrapper.idRuta=ruta}"></option>
+							</select> <span th:if="${#fields.hasErrors('idRuta')}"
+								th:errors="*{idRuta}" class="text-danger"></span>
 						</div>
 
 

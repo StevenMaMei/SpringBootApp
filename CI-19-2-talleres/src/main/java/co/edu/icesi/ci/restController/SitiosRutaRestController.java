@@ -40,18 +40,20 @@ public class SitiosRutaRestController {
 	
 	@DeleteMapping("/api/sitios-rutas")
 	public void deleteSitiosRuta(@RequestBody TransactionBody<Tmio1SitiosRutaWrapper> sitioRuta) throws Exception {
-		Tmio1SitiosRutaPK id = new Tmio1SitiosRutaPK();
-		id.setIdSitio(sitioRuta.getBody().getIdSitio());
-		id.setIdRuta(sitioRuta.getBody().getIdRuta());
-		Tmio1SitiosRuta sr = servicio.consultarSitioRuta(id);
-		if(sr==null) {
-			System.out.println("QUIUBO, NO ENCONTRE UN CARAJO");
-		}
-		servicio.eliminarSitioRuta(sr);	
+//		Tmio1SitiosRutaPK id = new Tmio1SitiosRutaPK();
+//		id.setIdSitio(sitioRuta.getBody().getIdSitio());
+//		id.setIdRuta(sitioRuta.getBody().getIdRuta());
+//		Tmio1SitiosRuta sr = servicio.consultarSitioRuta(id);
+//		if(sr==null) {
+//			System.out.println("QUIUBO, NO ENCONTRE UN CARAJO");
+//		}
+//		servicio.eliminarSitioRuta(sr);	
+		servicio.eliminarSitioRuta(sitioRuta.getBody());
 	}
 	
 	@PutMapping("/api/sitios-rutas")
 	public void updateSitio(@RequestBody TransactionBody<Tmio1SitiosRutaWrapper> sitio) throws Exception {
+		System.out.println(sitio.getBody().getIdRutaViejo());
 		servicio.actualizarSitioRuta(sitio.getBody());
 	}
 	

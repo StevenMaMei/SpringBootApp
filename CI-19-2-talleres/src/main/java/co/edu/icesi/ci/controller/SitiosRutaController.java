@@ -71,7 +71,6 @@ public class SitiosRutaController {
 		wrapper.setIdRutaViejo(ruta);
 		
 		// TODO MAKE A REQUEST TO RETURN DATA FROM DATABASE WHEN LOOKING THIS UP
-		// AL TRATAR DE CREAR PARECE DARSE UN ERROR PARTICULAR RESPECTO A LOS SITIOS???
 		
 		
 		model.addAttribute("rutas",delegate.getRutas());
@@ -85,12 +84,15 @@ public class SitiosRutaController {
 		if(!action.equals("Cancel")) {
 			if(bindingResult.hasErrors()) {
 				Tmio1SitiosRutaWrapper wrapper = new Tmio1SitiosRutaWrapper();
-				wrapper.setIdSitio(tmio1SitiosRutaWrapper.getIdSitio());
-				wrapper.setIdRuta(tmio1SitiosRutaWrapper.getIdRuta());
+				wrapper.setIdSitioViejo(tmio1SitiosRutaWrapper.getIdSitio());
+				wrapper.setIdRutaViejo(tmio1SitiosRutaWrapper.getIdRuta());
 				model.addAttribute("rutas",delegate.getRutas());
 				model.addAttribute("sitios",delegate.getSitios());
 				model.addAttribute("tmio1SitiosRutaWrapper", wrapper);
+				return "sitios-rutas/edit";
 			}
+			System.out.println("TENGO UN VIEJO QUE PASO POR CONTROLLER: "+tmio1SitiosRutaWrapper.getIdRutaViejo());
+			delegate.editSitiosRuta(tmio1SitiosRutaWrapper);
 		}
 		return "redirect:/sitios-rutas/";
 	}
