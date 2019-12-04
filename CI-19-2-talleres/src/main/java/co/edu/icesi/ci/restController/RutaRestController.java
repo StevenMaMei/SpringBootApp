@@ -23,8 +23,13 @@ public class RutaRestController {
 	}
 	
 	@PostMapping("/api/rutas/")
-	public void addRuta(@RequestBody TransactionBody<Tmio1Ruta> ruta) throws Exception{
-		servicio.guardarRuta(ruta.getBody());
+	public TransactionBody<Object> addRuta(@RequestBody TransactionBody<Tmio1Ruta> ruta) throws Exception{
+		try {
+			servicio.guardarRuta(ruta.getBody());
+			return new TransactionBody<Object>("hehehh", "hello");
+		}catch (Exception e) {
+			return new TransactionBody<Object>("exception", e.getMessage());
+		}
 	}
 	
 	@GetMapping("/api/rutas/search/findByDescripcion")

@@ -61,7 +61,10 @@ public class ServicioRestController {
 		
 		Tmio1Servicio s;
 		try {
+			System.out.println("uptade");
+			System.out.println(t.getIdBusViejo()+" "+t.getCedulaConductorViejo()+" "+ t.getCedulaConductorViejo()+" "+t.getRutaIdViejo()+" "+t.getFechaFinViejo().toString()+" "+t.getFechaInicioViejo().toString());
 			s = servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
+			System.out.println("AfterUpd");
 			if(s!= null) {
 				
 				
@@ -77,9 +80,9 @@ public class ServicioRestController {
 				pk.setIdRuta(Integer.parseInt(t.getRutaId()));
 				
 				ser.setId(pk);
-				
 				servicioServicio.actualizarServicio(ser);
 				servicioServicio.removerServicio(s);
+				System.out.println("jijij");
 			}
 		} catch (NumberFormatException e) {
 			return new TransactionBody<>("exception",e.getMessage());
@@ -94,7 +97,8 @@ public class ServicioRestController {
 		return new TransactionBody<Tmio1Servicio>("servicio", servicioServicio.consultarServicio(Integer.parseInt(w.getIdBus()), w.getCedulaConductor(), Integer.parseInt(w.getRutaId()), w.getFechaInicio(), w.getFechaFin()));
 	}
 	@GetMapping("/api/servicios/find/")
-	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") Date fecha) {
-		return new TransactionBody<>("servicios",servicioServicio.findByDate(fecha));
+	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") long fecha) {
+		System.out.println("--------------------------------"+ fecha);
+		return new TransactionBody<>("servicios",servicioServicio.findByDate(new Date(fecha)));
 	}
 }

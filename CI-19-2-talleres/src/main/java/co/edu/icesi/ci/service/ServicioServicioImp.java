@@ -135,8 +135,12 @@ public class ServicioServicioImp implements ServicioServicio {
 	public Iterable<Tmio1Servicio> findByDate(Date date) {
 		ArrayList<Tmio1Servicio> servicios = (ArrayList<Tmio1Servicio>) findAll();
 		ArrayList<Tmio1Servicio> res= new ArrayList<>();
+		System.out.println(date.toString());
+		System.out.println("find By date");
 		for(int i =0 ; i<servicios.size();i++) {
 			Tmio1ServicioPK pk = servicios.get(i).getId();
+			System.out.println(pk.getFechaInicio().toString());
+			System.out.println(pk.getFechaFin().toString());
 			if(pk.getFechaInicio().compareTo(date)<=0 && pk.getFechaFin().compareTo(date)>=0)
 				res.add(servicios.get(i));
 		}

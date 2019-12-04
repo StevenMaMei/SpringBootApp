@@ -115,38 +115,43 @@ public class ServicioController {
 		Tmio1ServicioWrapper w = new Tmio1ServicioWrapper();
 		try {
 //			Tmio1Servicio s= servicioServicio.consultarServicio(id, ced, idR, new Date(fi), new Date(ff));
-			Tmio1ServicioWrapper wr = new Tmio1ServicioWrapper();
-			wr.setIdBus(id.toString());
-			wr.setCedulaConductor(ced);
-			wr.setRutaId(idR.toString());
-			wr.setFechaInicio(new Date(fi));
-			wr.setFechaFin(new Date(ff));
-			
-			Tmio1Servicio s= delegate.findServicio(wr);
-			if(s!= null) {
-				Tmio1Servicio ser= s;
-				Tmio1ServicioPK pk = ser.getId();
-				w.setCedulaConductor(pk.getCedulaConductor());
-				w.setCedulaConductorViejo(pk.getCedulaConductor());
-				
-				w.setFechaFin(pk.getFechaFin());
-				w.setFechaFinViejo(pk.getFechaFin());
-				
-				w.setFechaInicio(pk.getFechaInicio());
-				w.setFechaInicioViejo(pk.getFechaInicio());
-				
-				w.setIdBus(pk.getIdBus()+"");
-				w.setIdBusViejo(pk.getIdBus()+"");
-				
-				w.setRutaId(pk.getIdRuta()+"");
-				w.setRutaIdViejo(pk.getIdRuta()+"");
+			System.out.println("jejeje");
+			System.out.println(id.toString());
+			w.setIdBus(id.toString());
+			w.setIdBusViejo(id.toString());
+			w.setCedulaConductor(ced);
+			w.setCedulaConductorViejo(ced);
+			w.setRutaId(idR.toString());
+			w.setRutaIdViejo(idR.toString());
+			w.setFechaInicio(new Date(fi));
+			w.setFechaInicioViejo(new Date(fi));
+			w.setFechaFin(new Date(ff));
+			w.setFechaFinViejo(new Date(ff));
+			//Tmio1Servicio s= delegate.findServicio(w);
+//			if(s!= null) {
+//				Tmio1Servicio ser= s;
+//				Tmio1ServicioPK pk = ser.getId();
+//				w.setCedulaConductor(pk.getCedulaConductor());
+//				w.setCedulaConductorViejo(pk.getCedulaConductor());
+//				
+//				w.setFechaFin(pk.getFechaFin());
+//				w.setFechaFinViejo(pk.getFechaFin());
+//				
+//				w.setFechaInicio(pk.getFechaInicio());
+//				w.setFechaInicioViejo(pk.getFechaInicio());
+//				
+//				w.setIdBus(pk.getIdBus()+"");
+//				w.setIdBusViejo(pk.getIdBus()+"");
+//				
+//				w.setRutaId(pk.getIdRuta()+"");
+//				w.setRutaIdViejo(pk.getIdRuta()+"");
 				
 				model.addAttribute("tmio1ServicioWrapper", w);
 				model.addAttribute("conductores", delegate.getConductores());
 				model.addAttribute("buses", delegate.getBuses());
 				model.addAttribute("rutas",delegate.getRutas());
 				return "servicios/edit";
-			}
+//			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,7 +159,7 @@ public class ServicioController {
 		return "redirect:/servicios/";
 	}
 	@PostMapping("/servicios/edit/")
-	public String updateTmio1Servicio(@Valid Tmio1ServicioWrapper tmio1ServicioWrapper, BindingResult bindingResult,
+	public String updateTmio1Servicio(@Valid @ModelAttribute Tmio1ServicioWrapper tmio1ServicioWrapper, BindingResult bindingResult,
 			@RequestParam(value = "action", required = true) String action, Model model) {
 		if (!action.equals("Cancel")) {			
 			if (bindingResult.hasErrors()) {
@@ -166,6 +171,9 @@ public class ServicioController {
 			} else {
 				Tmio1Servicio ser= new Tmio1Servicio();
 				try {
+					System.out.println("lleggoooooo");
+					System.out.println(tmio1ServicioWrapper.getIdBus());
+					System.out.println(tmio1ServicioWrapper.getIdBusViejo());
 					delegate.updateServicio(tmio1ServicioWrapper);
 					
 				}catch(Exception e) {
@@ -191,12 +199,12 @@ public class ServicioController {
 					model.addAttribute("rutas",delegate.getRutas());
 					return "/servicios/edit";
 				}
-				try {
-					delegate.updateServicio(tmio1ServicioWrapper);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					delegate.updateServicio(tmio1ServicioWrapper);
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return "redirect:/servicios/";
