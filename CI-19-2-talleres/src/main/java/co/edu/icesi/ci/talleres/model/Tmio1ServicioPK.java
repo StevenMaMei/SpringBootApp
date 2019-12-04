@@ -3,6 +3,8 @@ package co.edu.icesi.ci.talleres.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * The primary key class for the tmio1_servicios database table.
  * 
@@ -20,11 +22,13 @@ public class Tmio1ServicioPK implements Serializable {
 
 	@Column(name="id_bus", insertable=false, updatable=false)
 	private Integer idBus;
-
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_inicio")
 	private java.util.Date fechaInicio;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_fin")
 	private java.util.Date fechaFin;

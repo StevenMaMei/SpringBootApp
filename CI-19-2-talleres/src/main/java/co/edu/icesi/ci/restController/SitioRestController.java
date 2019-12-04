@@ -27,8 +27,9 @@ public class SitioRestController {
 	}
 	
 	@PostMapping("/api/sitios/")
-	public void saveSitio(@RequestBody TransactionBody<Tmio1Sitio> sitio) throws Exception {
+	public TransactionBody<Object> saveSitio(@RequestBody TransactionBody<Tmio1Sitio> sitio) throws Exception {
 		servicio.guardarSitio(sitio.getBody());
+		return new TransactionBody<>("null",null);
 	}
 	@GetMapping("/api/sitios/find")
 	public Tmio1Sitio findSitio(@Param("id") long id) throws Exception {

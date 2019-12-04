@@ -41,40 +41,64 @@ public class ServicioRestController {
 	}
 
 	@PostMapping("/api/servicios/")
-	public void saveServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
+	public TransactionBody<Object> saveServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper){
 		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
-		servicioServicio.guardarServicio(Integer.parseInt(t.getIdBus()), t.getCedulaConductor(), Integer.parseInt(t.getRutaId()), t.getFechaInicio(), t.getFechaFin());	
+		try {
+			servicioServicio.guardarServicio(Integer.parseInt(t.getIdBus()), t.getCedulaConductor(), Integer.parseInt(t.getRutaId()), t.getFechaInicio(), t.getFechaFin());
+		} catch (NumberFormatException e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		} catch (Exception e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		}	
+		return new TransactionBody<>("null",null);
+		
 	}
 
 	@PutMapping("/api/servicios/")
-	public void updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper) throws NumberFormatException, Exception {
+	public TransactionBody<Object> updateServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> tmio1ServicioWrapper){
 		Tmio1Servicio ser= new Tmio1Servicio();
 		Tmio1ServicioWrapper t = tmio1ServicioWrapper.getBody();
-
-		Tmio1Servicio s= servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
-		if(s!= null) {
-
-			
-			ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(t.getIdBus())));
-			ser.setTmio1Conductore(servicioConductor.consultarConductor(t.getCedulaConductor()));
-			ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(t.getRutaId())));
-
-			Tmio1ServicioPK pk = new Tmio1ServicioPK();
-			pk.setCedulaConductor(t.getCedulaConductor());
-			pk.setFechaFin(t.getFechaFin());
-			pk.setFechaInicio(t.getFechaInicio());
-			pk.setIdBus(Integer.parseInt(t.getIdBus()));
-			pk.setIdRuta(Integer.parseInt(t.getRutaId()));
-
-			ser.setId(pk);
-
-			servicioServicio.actualizarServicio(ser);
-			servicioServicio.removerServicio(s);
+		
+		Tmio1Servicio s;
+		try {
+			System.out.println("uptade");
+			System.out.println(t.getIdBusViejo()+" "+t.getCedulaConductorViejo()+" "+ t.getCedulaConductorViejo()+" "+t.getRutaIdViejo()+" "+t.getFechaFinViejo().toString()+" "+t.getFechaInicioViejo().toString());
+			s = servicioServicio.consultarServicio(Integer.parseInt(t.getIdBusViejo()), t.getCedulaConductorViejo(), Integer.parseInt(t.getRutaIdViejo()), t.getFechaInicioViejo(), t.getFechaFinViejo());
+			System.out.println("AfterUpd");
+			if(s!= null) {
+				
+				
+				ser.setTmio1Bus(servicioBus.consultarBus(Integer.parseInt(t.getIdBus())));
+				ser.setTmio1Conductore(servicioConductor.consultarConductor(t.getCedulaConductor()));
+				ser.setTmio1Ruta(servicioRuta.consultarRuta(Integer.parseInt(t.getRutaId())));
+				
+				Tmio1ServicioPK pk = new Tmio1ServicioPK();
+				pk.setCedulaConductor(t.getCedulaConductor());
+				pk.setFechaFin(t.getFechaFin());
+				pk.setFechaInicio(t.getFechaInicio());
+				pk.setIdBus(Integer.parseInt(t.getIdBus()));
+				pk.setIdRuta(Integer.parseInt(t.getRutaId()));
+				
+				ser.setId(pk);
+				servicioServicio.actualizarServicio(ser);
+				servicioServicio.removerServicio(s);
+				System.out.println("jijij");
+			}
+		} catch (NumberFormatException e) {
+			return new TransactionBody<>("exception",e.getMessage());
+		} catch (Exception e) {
+			return new TransactionBody<>("exception",e.getMessage());
 		}
+		return new TransactionBody<>("null",null);
 	}
-	
-	@GetMapping("/api/servicios/find")
-	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") Date fecha) {
-		return new TransactionBody<>("servicios",servicioServicio.findByDate(fecha));
+	@GetMapping("/api/servicios/findById/")
+	public TransactionBody<Tmio1Servicio> consultarServicio(@RequestBody TransactionBody<Tmio1ServicioWrapper> wrapper) throws Exception{
+		Tmio1ServicioWrapper w = wrapper.getBody();
+		return new TransactionBody<Tmio1Servicio>("servicio", servicioServicio.consultarServicio(Integer.parseInt(w.getIdBus()), w.getCedulaConductor(), Integer.parseInt(w.getRutaId()), w.getFechaInicio(), w.getFechaFin()));
+	}
+	@GetMapping("/api/servicios/find/")
+	public TransactionBody<Iterable<Tmio1Servicio>> buscar(@Param("fecha") long fecha) {
+		System.out.println("--------------------------------"+ fecha);
+		return new TransactionBody<>("servicios",servicioServicio.findByDate(new Date(fecha)));
 	}
 }

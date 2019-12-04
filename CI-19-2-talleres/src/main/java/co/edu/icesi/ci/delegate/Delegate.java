@@ -42,13 +42,13 @@ public class Delegate {
 		}
 		return response.getBody().getBody();
 	}
-	public void saveSitio(Tmio1Sitio sitio) {
+	public void saveSitio(Tmio1Sitio sitio) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
 		TransactionBody<Tmio1Sitio> transaction= new TransactionBody<>("apiContext",sitio);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Sitio>> response = null;
+		ResponseEntity<TransactionBody<Object>> response = null;
 		try {
-			response = restTemplate.exchange(REST_URI + "/sitios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Sitio>>(){});			
+			response = restTemplate.exchange(REST_URI + "/sitios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Object>>(){});			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
@@ -110,20 +110,38 @@ public class Delegate {
 		return s;
 	}
 	
-	public void saveBus(Tmio1Bus bus) {
+	public void saveBus(Tmio1Bus bus) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
-		TransactionBody<Tmio1Bus> transaction= new TransactionBody<>("apiContext",bus);
+		TransactionBody<Object> transaction= new TransactionBody<>("apiContext",bus);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Bus>> response = null;
+		ResponseEntity<TransactionBody<Object>> response = null;
 		try {
-			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Bus>>(){});			
+			response = restTemplate.exchange(REST_URI + "/buses/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Object>>(){});			
+		} catch (HttpStatusCodeException e) {
+			int statusCode = e.getStatusCode().value();
+			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		if(response.getBody().getApiContext().equals("exception")) {
+			throw new Exception ((String)response.getBody().getBody());
+		}
+		
+	}
+	public Tmio1Servicio findServicio(Tmio1ServicioWrapper w ) {
+		TransactionBody<Tmio1ServicioWrapper> transaction = new TransactionBody<Tmio1ServicioWrapper>("apicontext", w);
+		HttpHeaders headerAct = new HttpHeaders();
+		HttpEntity request = new HttpEntity(transaction);
+		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
+		
+		try {
+			response = restTemplate.exchange(REST_URI + "/servicios/findById/", HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
+			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
 		}
 		
+		return response.getBody().getBody();
 	}
-	
 	public Iterable<Tmio1Bus> buscarBus(String placa) {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
@@ -147,29 +165,33 @@ public class Delegate {
 		return response.getBody().getBody();
 	}
 	
-	public void saveServicio(Tmio1ServicioWrapper w) {
+	public void saveServicio(Tmio1ServicioWrapper w) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
-		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		TransactionBody<Object> transaction= new TransactionBody<>("apiContext",w);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
-		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
-		
+		ResponseEntity<TransactionBody<Object>> response = null;
+		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.POST, request, new ParameterizedTypeReference<TransactionBody<Object>>(){});
+		if(response.getBody().getApiContext().equals("exception")) {
+			throw new Exception((String) response.getBody().getBody());
+		}
 	}
 	
-	public void updateServicio(Tmio1ServicioWrapper w) {
+	public void updateServicio(Tmio1ServicioWrapper w) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
-		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<>("apiContext",w);
+		TransactionBody<Tmio1ServicioWrapper> transaction= new TransactionBody<Tmio1ServicioWrapper>("apiContext",w);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Servicio>> response = null;
-		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.PUT, request, new ParameterizedTypeReference<TransactionBody<Tmio1Servicio>>(){});
-		
+		ResponseEntity<TransactionBody<Object>> response = null;
+		response = restTemplate.exchange(REST_URI + "/servicios/", HttpMethod.PUT, request, new ParameterizedTypeReference<TransactionBody<Object>>(){});
+		if(response.getBody().getApiContext().equals("exception")) {
+			throw new Exception((String) response.getBody().getBody());
+		}
 	}
 	
 	public Iterable<Tmio1Servicio> findServicioByDate(Date fecha) {
 		HttpHeaders headerAct = new HttpHeaders();
 		HttpEntity request = new HttpEntity(headerAct);
 		ResponseEntity<TransactionBody<Iterable<Tmio1Servicio>>> response = null;
-		response = restTemplate.exchange(REST_URI + "/buses/search/find?fecha="+fecha, HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
+		response = restTemplate.exchange(REST_URI + "/servicios/find/?fecha="+fecha.getTime(), HttpMethod.GET, request,  new ParameterizedTypeReference<TransactionBody<Iterable<Tmio1Servicio>>>(){});
 		return response.getBody().getBody();
 	}
 	public Iterable<Tmio1Conductore> getConductores() {
@@ -188,20 +210,24 @@ public class Delegate {
 		return response.getBody().getBody();
 	}
 
-	public void saveConductor(Tmio1Conductore conductor) {
+	public void saveConductor(Tmio1Conductore conductor) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
 
-		TransactionBody<Tmio1Conductore> transaction = new TransactionBody<>("apiContext", conductor);
+		TransactionBody<Object> transaction = new TransactionBody<>("apiContext", conductor);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Conductore>> response = null;
+		ResponseEntity<TransactionBody<Object>> response = null;
 		try {
 			response = restTemplate.exchange(REST_URI + "/conductores/", HttpMethod.POST, request,
-					new ParameterizedTypeReference<TransactionBody<Tmio1Conductore>>() {
+					new ParameterizedTypeReference<TransactionBody<Object>>() {
 			});
 			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		
+		if(response.getBody().getApiContext().equals("exception")) {
+			throw new Exception((String) response.getBody().getBody());
 		}
 	}
 
@@ -240,20 +266,23 @@ public class Delegate {
 		return response.getBody().getBody();
 	}
 
-	public void saveRuta(Tmio1Ruta ruta) {
+	public void saveRuta(Tmio1Ruta ruta) throws Exception {
 		HttpHeaders headerAct = new HttpHeaders();
 
 		TransactionBody<Tmio1Ruta> transaction = new TransactionBody<>("apiContext", ruta);
 		HttpEntity request = new HttpEntity(transaction);
-		ResponseEntity<TransactionBody<Tmio1Ruta>> response = null;
+		ResponseEntity<TransactionBody<Object>> response = null;
 		try {
 			response = restTemplate.exchange(REST_URI + "/rutas/", HttpMethod.POST, request,
-					new ParameterizedTypeReference<TransactionBody<Tmio1Ruta>>() {
+					new ParameterizedTypeReference<TransactionBody<Object>>() {
 			});
 			
 		} catch (HttpStatusCodeException e) {
 			int statusCode = e.getStatusCode().value();
 			System.out.println("ERROR: " + statusCode + " - " + e.getResponseBodyAsString());
+		}
+		if(response.getBody().getApiContext().equals("exception")) {
+			throw new Exception((String) response.getBody().getBody());
 		}
 	}
 	
